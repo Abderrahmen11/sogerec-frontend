@@ -1,0 +1,3 @@
+// placeholder: authService
+
+export default {};
