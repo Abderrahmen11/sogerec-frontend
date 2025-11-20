@@ -1,5 +1,12 @@
-// placeholder: useNotifications hook
+import { useContext } from "react";
+import { NotificationContext } from "../context/NotificationContext";
 
 export default function useNotifications() {
-  return null;
+  const context = useContext(NotificationContext);
+  if (!context) {
+    throw new Error(
+      "useNotifications must be used within NotificationProvider"
+    );
+  }
+  return context;
 }

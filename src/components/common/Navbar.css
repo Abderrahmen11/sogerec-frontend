@@ -1,0 +1,82 @@
+/* Navbar styling matching native/css/style.css */
+@import '../../styles/variables.css';
+
+.navbar {
+    background-color: var(--white-color);
+    padding: 1rem 0;
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.navbar-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    color: var(--primary-color) !important;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--h5-font-size);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-brand i {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--dark-color) !important;
+    font-weight: var(--font-weight-medium);
+    margin: 0 10px;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0 !important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-color) !important;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.navbar-icon {
+    color: var(--dark-color);
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.navbar-icon:hover {
+    color: var(--primary-color);
+}
+
+.dropdown-menu {
+    border-radius: var(--border-radius-small);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--section-bg-color);
+    color: var(--primary-color);
+}
+
+@media (max-width: 991px) {
+    .nav-link {
+        padding: 0.5rem 0 !important;
+        margin: 0.5rem 0;
+    }
+
+    .navbar-nav {
+        border-top: 1px solid #e0e0e0;
+        padding-top: 1rem;
+    }
+}

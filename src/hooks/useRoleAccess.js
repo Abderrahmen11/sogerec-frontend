@@ -1,5 +1,25 @@
-// placeholder: useRoleAccess hook
+import useAuth from "./useAuth";
 
 export default function useRoleAccess() {
-  return null;
+  const { user } = useAuth();
+
+  const hasRole = (requiredRoles) => {
+    if (!user) return false;
+    if (typeof requiredRoles === "string") {
+      return user.role === requiredRoles;
+    }
+    return requiredRoles.includes(user.role);
+  };
+
+  const isAdmin = () => hasRole("admin");
+  const isTechnician = () => hasRole("technician");
+  const isClient = () => hasRole("client");
+
+  return {
+    hasRole,
+    isAdmin,
+    isTechnician,
+    isClient,
+    userRole: user?.role,
+  };
 }

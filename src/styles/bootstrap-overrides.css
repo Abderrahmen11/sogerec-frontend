@@ -1,0 +1,131 @@
+/* Override Bootstrap colors to match native theme variables */
+@import './variables.css';
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--white-color) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--custom-btn-bg-hover-color) !important;
+    border-color: var(--custom-btn-bg-hover-color) !important;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+    color: var(--white-color) !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Light buttons (used on dark hero) */
+.btn-light {
+    background-color: var(--white-color) !important;
+    color: var(--secondary-color) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.btn-light:hover,
+.btn-light:focus {
+    background-color: #f8f9fa !important;
+}
+
+.btn-link {
+    color: var(--primary-color) !important;
+}
+
+/* Close button styling */
+.btn-close {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/* Badges */
+.badge.bg-primary {
+    background-color: var(--primary-color) !important;
+    color: var(--white-color) !important;
+}
+
+.badge.bg-secondary {
+    background-color: var(--secondary-color) !important;
+    color: var(--white-color) !important;
+}
+
+.badge.bg-success {
+    background-color: #28a745 !important;
+    color: #fff !important;
+}
+
+.badge.bg-info {
+    background-color: var(--custom-btn-bg-hover-color) !important;
+    color: #fff !important;
+}
+
+.badge.bg-warning {
+    background-color: #f9a826 !important;
+    color: #212529 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+/* Navbar links */
+.navbar-nav .nav-link {
+    color: var(--white-color) !important;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Dropdown items */
+.dropdown-menu .dropdown-item {
+    color: var(--p-color) !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    color: var(--primary-color) !important;
+    background-color: transparent !important;
+}
+
+/* Pagination / page links */
+.page-link {
+    color: var(--p-color) !important;
+}
+
+.page-link:hover,
+.page-link.active {
+    background-color: var(--secondary-color) !important;
+    color: var(--white-color) !important;
+}
+
+/* Forms focus */
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(18, 153, 221, 0.25) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Misc */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+@media (max-width: 991px) {
+    .btn {
+        padding: .5rem 1rem;
+    }
+}

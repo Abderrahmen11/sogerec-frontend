@@ -1,5 +1,10 @@
-// placeholder: useTickets hook
+import { useContext } from "react";
+import { TicketContext } from "../context/TicketContext";
 
 export default function useTickets() {
-  return null;
+  const context = useContext(TicketContext);
+  if (!context) {
+    throw new Error("useTickets must be used within TicketProvider");
+  }
+  return context;
 }

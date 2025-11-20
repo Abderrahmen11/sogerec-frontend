@@ -1,0 +1,37 @@
+.auth-container {
+    background: linear-gradient(135deg, var(--section-bg-color), white);
+    padding: 2rem 0;
+}
+
+.auth-card {
+    background: white;
+    border-radius: var(--border-radius-medium);
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card h2 {
+    color: var(--dark-color);
+    font-weight: var(--font-weight-bold);
+}
+
+.auth-card .form-label {
+    font-weight: var(--font-weight-medium);
+    color: var(--dark-color);
+}
+
+.auth-card .form-control {
+    border-radius: var(--border-radius-small);
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+}
+
+.auth-card .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(226, 45, 45, 0.25);
+}
+
+.auth-card a {
+    color: var(--primary-color);
+    font-weight: var(--font-weight-medium);
+}
