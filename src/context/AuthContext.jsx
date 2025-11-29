@@ -11,12 +11,17 @@ export function AuthProvider({ children }) {
 
     // Initialize auth state from localStorage on mount
     useEffect(() => {
-        const currentUser = authService.getCurrentUser();
-        if (currentUser) {
-            setUser(currentUser);
-            setIsAuthenticated(true);
+        try {
+            const currentUser = authService.getCurrentUser();
+            if (currentUser) {
+                setUser(currentUser);
+                setIsAuthenticated(true);
+            }
+        } catch (err) {
+            console.error('Auth initialization error:', err);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     const login = useCallback(async (email, password) => {

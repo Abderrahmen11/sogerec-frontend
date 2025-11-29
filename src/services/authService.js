@@ -4,7 +4,7 @@ const authService = {
   // Get CSRF token from Sanctum before login
   getCsrfToken: async () => {
     try {
-      await api.get("/sanctum/csrf-cookie");
+      await api.post("/sanctum/csrf-cookie");
     } catch (error) {
       console.error("CSRF cookie error:", error);
     }

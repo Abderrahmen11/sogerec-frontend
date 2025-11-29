@@ -1,5 +1,6 @@
-import React, { createContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useState, useCallback, useEffect, useContext } from 'react';
 import notificationService from '../services/notificationService';
+import { AuthContext } from './AuthContext';
 
 export const NotificationContext = createContext();
 
@@ -8,6 +9,7 @@ export function NotificationProvider({ children }) {
     const [unreadCount, setUnreadCount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { isAuthenticated, loading: authLoading } = useContext(AuthContext);
 
     const fetchNotifications = useCallback(async (params = {}) => {
         setLoading(true);
@@ -53,11 +55,13 @@ export function NotificationProvider({ children }) {
         }
     }, [notifications]);
 
-    // Fetch notifications on mount
+    // Fetch notifications only when authenticated
     useEffect(() => {
-        fetchNotifications();
-        getUnreadCount();
-    }, []);
+        if (!authLoading && isAuthenticated) {
+            fetchNotifications();
+            getUnreadCount();
+        }
+    }, [isAuthenticated, authLoading, fetchNotifications, getUnreadCount]);
 
     const value = {
         notifications,

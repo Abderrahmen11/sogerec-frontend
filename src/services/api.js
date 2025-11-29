@@ -9,7 +9,23 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
+    "X-Requested-With": "XMLHttpRequest",
   },
+});
+
+// Add CSRF token from cookie to request headers
+api.interceptors.request.use((config) => {
+  // Get CSRF token from cookie
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("XSRF-TOKEN="))
+    ?.split("=")[1];
+
+  if (token) {
+    config.headers["X-CSRF-TOKEN"] = decodeURIComponent(token);
+  }
+
+  return config;
 });
 
 // Handle response errors (401 unauthorized)
@@ -17,8 +33,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Session expired, redirect to login
-      window.location.href = "/login";
+      // Don't redirect on login/register pages
+      const currentPath = window.location.pathname;
+      if (
+        !currentPath.includes("/login") &&
+        !currentPath.includes("/register")
+      ) {
+        // Session expired, redirect to login
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
