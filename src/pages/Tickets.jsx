@@ -7,7 +7,7 @@ const Tickets = () => {
 
     useEffect(() => {
         fetchTickets();
-    }, []);
+    }, [fetchTickets]);
 
     return (
         <div className="container-fluid py-5">

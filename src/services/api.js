@@ -15,7 +15,6 @@ const api = axios.create({
 
 // Add CSRF token from cookie to request headers
 api.interceptors.request.use((config) => {
-  // Get CSRF token from cookie
   const token = document.cookie
     .split("; ")
     .find((row) => row.startsWith("XSRF-TOKEN="))
@@ -28,21 +27,12 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle response errors (401 unauthorized)
+// Handle response errors - let AuthContext handle 401s via login verification
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Don't redirect on login/register pages
-      const currentPath = window.location.pathname;
-      if (
-        !currentPath.includes("/login") &&
-        !currentPath.includes("/register")
-      ) {
-        // Session expired, redirect to login
-        window.location.href = "/login";
-      }
-    }
+    // Don't auto-redirect on 401 - let components/contexts handle it
+    // This prevents unexpected redirects during initial auth check
     return Promise.reject(error);
   }
 );

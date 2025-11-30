@@ -5,7 +5,6 @@ const ReportForm = ({ interventionId, onSubmit }) => {
         findings: '',
         actions_taken: '',
         recommendations: '',
-        status: 'completed',
     });
 
     const handleChange = (e) => {
@@ -15,7 +14,13 @@ const ReportForm = ({ interventionId, onSubmit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit({ ...formData, intervention_id: interventionId });
+        // Combine fields into a single report string for the backend
+        const reportContent = `Findings: ${formData.findings}\nActions Taken: ${formData.actions_taken}\nRecommendations: ${formData.recommendations}`;
+
+        onSubmit({
+            report: reportContent,
+            intervention_id: interventionId
+        });
     };
 
     return (

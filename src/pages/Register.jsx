@@ -45,30 +45,35 @@ const Register = () => {
                             {errors.form && <div className="alert alert-danger">{errors.form}</div>}
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label className="form-label">Full Name</label>
+                                    <label htmlFor="name" className="form-label">Full Name</label>
                                     <input
                                         type="text"
-                                        className="form-control"
+                                        id="name"
                                         name="name"
+                                        className="form-control"
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
+                                        autoComplete="name"
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Email</label>
+                                    <label htmlFor="email" className="form-label">Email</label>
                                     <input
                                         type="email"
-                                        className="form-control"
+                                        id="email"
                                         name="email"
+                                        className="form-control"
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
+                                        autoComplete="email"
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Role</label>
+                                    <label htmlFor="role" className="form-label">Role</label>
                                     <select
+                                        id="role"
                                         className="form-control"
                                         name="role"
                                         value={formData.role}
@@ -79,25 +84,29 @@ const Register = () => {
                                     </select>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Password</label>
+                                    <label htmlFor="password" className="form-label">Password</label>
                                     <input
                                         type="password"
-                                        className="form-control"
+                                        id="password"
                                         name="password"
+                                        className="form-control"
                                         value={formData.password}
                                         onChange={handleChange}
                                         required
+                                        autoComplete="new-password"
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Confirm Password</label>
+                                    <label htmlFor="password_confirmation" className="form-label">Confirm Password</label>
                                     <input
                                         type="password"
-                                        className="form-control"
+                                        id="password_confirmation"
                                         name="password_confirmation"
+                                        className="form-control"
                                         value={formData.password_confirmation}
                                         onChange={handleChange}
                                         required
+                                        autoComplete="new-password"
                                     />
                                     {errors.password && <small className="text-danger">{errors.password}</small>}
                                 </div>
@@ -117,4 +126,3 @@ const Register = () => {
 };
 
 export default Register;
-

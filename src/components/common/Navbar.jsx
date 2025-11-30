@@ -16,21 +16,31 @@ const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleLogout = async () => {
-        await logout();
-        navigate('/login');
+        try {
+            await logout();
+            navigate('/login', { replace: true });
+        } catch (error) {
+            console.error('Logout error:', error);
+            navigate('/login', { replace: true });
+        }
+    };
+
+    const handleNavClick = () => {
+        // Close dropdown when navigating
+        setDropdownOpen(false);
     };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-sticky">
             <div className="container-fluid">
-                <Link className="navbar-brand d-flex align-items-center" to="/">
+                <Link className="navbar-brand d-flex align-items-center" to="/" onClick={handleNavClick}>
                     <BuildIcon style={{ marginRight: 8 }} />
                     <span>SogeFix</span>
                 </Link>
 
                 <div className="d-lg-none ms-auto me-4">
                     {isAuthenticated && (
-                        <Link to="/notifications" className="text-reset">
+                        <Link to="/notifications" className="text-reset" onClick={handleNavClick}>
                             <IconButton color="inherit" size="large" aria-label="notifications">
                                 <Badge badgeContent={unreadCount} color="error">
                                     <NotificationsIcon />
@@ -57,24 +67,24 @@ const Navbar = () => {
                         <>
                             <ul className="navbar-nav ms-lg-5 me-lg-auto">
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                                    <Link className="nav-link" to="/dashboard" onClick={handleNavClick}>Dashboard</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/tickets">My Requests</Link>
+                                    <Link className="nav-link" to="/tickets" onClick={handleNavClick}>My Requests</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/interventions">Interventions</Link>
+                                    <Link className="nav-link" to="/interventions" onClick={handleNavClick}>Interventions</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/planning">Planning</Link>
+                                    <Link className="nav-link" to="/planning" onClick={handleNavClick}>Planning</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/reports">Reports</Link>
+                                    <Link className="nav-link" to="/reports" onClick={handleNavClick}>Reports</Link>
                                 </li>
                             </ul>
 
                             <div className="d-none d-lg-flex align-items-center">
-                                <Link to="/notifications" className="text-reset me-3">
+                                <Link to="/notifications" className="text-reset me-3" onClick={handleNavClick}>
                                     <IconButton color="inherit" size="large" aria-label="notifications">
                                         <Badge badgeContent={unreadCount} color="error">
                                             <NotificationsIcon />
@@ -92,8 +102,8 @@ const Navbar = () => {
                                     <ul className={`dropdown-menu dropdown-menu-end ${dropdownOpen ? 'show' : ''}`}>
                                         <li className="dropdown-header">{user?.name || 'User'}</li>
                                         <li><hr className="dropdown-divider" /></li>
-                                        <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-                                        <li><Link className="dropdown-item" to="/settings">Settings</Link></li>
+                                        <li><Link className="dropdown-item" to="/profile" onClick={handleNavClick}>Profile</Link></li>
+                                        <li><Link className="dropdown-item" to="/settings" onClick={handleNavClick}>Settings</Link></li>
                                         <li><hr className="dropdown-divider" /></li>
                                         <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
                                     </ul>

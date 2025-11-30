@@ -35,25 +35,29 @@ const Login = () => {
                             {(error || localError) && <div className="alert alert-danger">{error || localError}</div>}
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label className="form-label">Email</label>
+                                    <label htmlFor="email" className="form-label">Email</label>
                                     <input
                                         type="email"
-                                        className="form-control"
+                                        id="email"
                                         name="email"
+                                        className="form-control"
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
+                                        autoComplete="email"
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Password</label>
+                                    <label htmlFor="password" className="form-label">Password</label>
                                     <input
                                         type="password"
-                                        className="form-control"
+                                        id="password"
                                         name="password"
+                                        className="form-control"
                                         value={formData.password}
                                         onChange={handleChange}
                                         required
+                                        autoComplete="current-password"
                                     />
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
@@ -72,4 +76,3 @@ const Login = () => {
 };
 
 export default Login;
-

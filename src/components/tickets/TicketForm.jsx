@@ -5,6 +5,7 @@ const TicketForm = ({ onSubmit }) => {
         title: '',
         description: '',
         priority: 'medium',
+        category: 'general', // Default category
     });
 
     const handleChange = (e) => {
@@ -24,6 +25,10 @@ const TicketForm = ({ onSubmit }) => {
                 <input type="text" className="form-control" name="title" value={formData.title} onChange={handleChange} required />
             </div>
             <div className="mb-3">
+                <label className="form-label">Category</label>
+                <input type="text" className="form-control" name="category" value={formData.category} onChange={handleChange} required />
+            </div>
+            <div className="mb-3">
                 <label className="form-label">Description</label>
                 <textarea className="form-control" name="description" value={formData.description} onChange={handleChange} required></textarea>
             </div>
@@ -33,7 +38,7 @@ const TicketForm = ({ onSubmit }) => {
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
-                    <option value="critical">Critical</option>
+                    <option value="urgent">Urgent</option>
                 </select>
             </div>
             <button type="submit" className="btn btn-primary">Submit Ticket</button>
