@@ -4,12 +4,23 @@
     --primary-color: #1299dd;
     --secondary-color: #0073b3;
     --section-bg-color: var(--primary-color);
-    --custom-btn-bg-color: #00295c;
+    --custom-btn-bg-color: #004598;
     --custom-btn-bg-hover-color: #00a6ff;
     --dark-color: #3a4856;
     --p-color: #717275;
     --border-color: #7fffd4;
     --link-hover-color: #5441b0;
+    
+    /* Navbar colors */
+    --nav-bg: transparent;
+    --nav-bg-sticky: var(--secondary-color);
+    --nav-text: var(--white-color);
+    --nav-border: rgba(128, 208, 199, 0.35);
+    
+    /* Footer colors */
+    --footer-bg: #0a1f29;
+    --footer-text: rgba(255, 255, 255, 0.8);
+    --footer-title-color: var(--primary-color);
 
     --body-font-family: 'Open Sans', sans-serif;
     --title-font-family: 'Montserrat', sans-serif;

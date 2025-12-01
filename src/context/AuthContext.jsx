@@ -90,6 +90,18 @@ export function AuthProvider({ children }) {
         }
     }, []);
 
+    const isAdmin = useCallback(() => {
+        return user?.role === 'admin';
+    }, [user]);
+
+    const isTechnician = useCallback(() => {
+        return user?.role === 'technician';
+    }, [user]);
+
+    const isClient = useCallback(() => {
+        return user?.role === 'client' || user?.role === 'user';
+    }, [user]);
+
     const value = {
         user,
         isAuthenticated,
@@ -98,6 +110,9 @@ export function AuthProvider({ children }) {
         login,
         register,
         logout,
+        isAdmin,
+        isTechnician,
+        isClient,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

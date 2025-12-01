@@ -13,7 +13,7 @@ export default function useRoleAccess() {
 
   const isAdmin = () => hasRole("admin");
   const isTechnician = () => hasRole("technician");
-  const isClient = () => hasRole("client");
+  const isClient = () => hasRole(["client", "user"]); // Accept both 'client' and 'user' roles
 
   return {
     hasRole,

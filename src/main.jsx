@@ -1,6 +1,7 @@
 import React from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import 'bootstrap/dist/js/bootstrap.bundle';
 import App from './App';
 
 const root = createRoot(document.getElementById('root'));

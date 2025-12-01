@@ -38,20 +38,34 @@ export function NotificationProvider({ children }) {
     const markAsRead = useCallback(async (id) => {
         try {
             await notificationService.markAsRead(id);
-            setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
-            setUnreadCount(Math.max(0, unreadCount - 1));
+            setNotifications(prev => prev.map(n => n.id === id ? { ...n, read_at: new Date().toISOString() } : n));
+            setUnreadCount(prev => Math.max(0, prev - 1));
         } catch (err) {
             setError(err.message || 'Failed to mark notification as read');
         }
-    }, [notifications, unreadCount]);
+    }, []);
 
     const markAllAsRead = useCallback(async () => {
         try {
             await notificationService.markAllAsRead();
-            setNotifications(notifications.map(n => ({ ...n, read: true })));
+            setNotifications(prev => prev.map(n => ({ ...n, read_at: new Date().toISOString() })));
             setUnreadCount(0);
         } catch (err) {
             setError(err.message || 'Failed to mark all as read');
+        }
+    }, []);
+
+    const deleteNotification = useCallback(async (id) => {
+        try {
+            await notificationService.delete(id);
+            setNotifications(prev => prev.filter(n => n.id !== id));
+            // Update unread count if the deleted notification was unread
+            const deletedNotification = notifications.find(n => n.id === id);
+            if (deletedNotification && !deletedNotification.read_at) {
+                setUnreadCount(prev => Math.max(0, prev - 1));
+            }
+        } catch (err) {
+            setError(err.message || 'Failed to delete notification');
         }
     }, [notifications]);
 
@@ -72,6 +86,7 @@ export function NotificationProvider({ children }) {
         getUnreadCount,
         markAsRead,
         markAllAsRead,
+        deleteNotification,
     };
 
     return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>;

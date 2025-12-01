@@ -1,0 +1,86 @@
+/* Accordion styles with smooth animations */
+.accordion {
+    --bs-accordion-border-color: rgba(18, 153, 221, 0.2);
+    --bs-accordion-border-radius: var(--border-radius-medium);
+}
+
+.accordion-item {
+    border: 1px solid var(--bs-accordion-border-color);
+    border-radius: var(--border-radius-medium) !important;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.accordion-button {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--title-font-family);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    border: none;
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+.accordion-button span {
+    flex: 1;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(18, 153, 221, 0.05);
+    color: var(--primary-color);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(18, 153, 221, 0.25);
+    border-color: var(--primary-color);
+}
+
+.accordion-button::after {
+    display: none; /* Using MUI icons instead */
+}
+
+.accordion-button svg {
+    transition: transform 0.3s ease;
+    color: var(--primary-color);
+}
+
+.accordion-button.collapsed svg {
+    transform: rotate(0deg);
+}
+
+.accordion-button:not(.collapsed) svg {
+    transform: rotate(180deg);
+}
+
+.accordion-collapse {
+    transition: height 0.35s ease;
+}
+
+.accordion-body {
+    padding: 1.5rem;
+    color: var(--p-color);
+    font-size: var(--p-font-size);
+    line-height: 1.8;
+    background-color: var(--white-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .accordion-button {
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .accordion-body {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+}
+
