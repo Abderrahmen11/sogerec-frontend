@@ -93,8 +93,15 @@ const authService = {
       // Get CSRF token first
       await authService.getCsrfToken();
       const response = await apiClient.post("/register", userData);
+
+      // Store user data if returned
+      if (response.data.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+
       return response.data;
     } catch (error) {
+      localStorage.removeItem("user");
       throw error.response?.data || error.message;
     }
   },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Build, Notifications, Person, Settings, KeyboardArrowDown } from '@mui/icons-material';
+import { Build, Notifications, Person, Settings, KeyboardArrowDown, Logout } from '@mui/icons-material';
 import useAuth from '../../hooks/useAuth';
 import useNotifications from '../../hooks/useNotifications';
 import useRoleAccess from '../../hooks/useRoleAccess';
@@ -188,11 +188,6 @@ const Navbar = () => {
                                                         Reports
                                                     </Link>
                                                 </li>
-                                                <li>
-                                                    <Link className="dropdown-item" to="/settings" onClick={handleNavClick}>
-                                                        Settings
-                                                    </Link>
-                                                </li>
                                                 <li><hr className="dropdown-divider" /></li>
                                                 <li>
                                                     <button className="dropdown-item text-danger" onClick={handleLogout}>
@@ -214,28 +209,25 @@ const Navbar = () => {
                                         </span>
                                     )}
                                 </Link>
-                                {!isAdmin() && (
-                                    <Link to="/profile" className="navbar-icon" onClick={handleNavClick}>
-                                        <Person />
-                                    </Link>
-                                )}
-                                {isAdmin() && (
-                                    <Link to="/settings" className="navbar-icon" onClick={handleNavClick}>
-                                        <Settings />
-                                    </Link>
-                                )}
+                                <button
+                                    onClick={handleLogout}
+                                    className="navbar-icon border-0 bg-transparent text-danger desktop-logout-btn"
+                                    title="Logout"
+                                    aria-label="Logout"
+                                >
+                                    <Logout />
+                                </button>
                             </div>
 
                             {/* Mobile logout for non-admin users */}
-                            {!isAdmin() && (
-                                <ul className="navbar-nav d-lg-none">
-                                    <li className="nav-item">
-                                        <button className="nav-link btn btn-link" onClick={handleLogout}>
-                                            <b>Logout</b>
-                                        </button>
-                                    </li>
-                                </ul>
-                            )}
+                            <ul className="navbar-nav d-lg-none">
+                                <li className="nav-item">
+                                    <button className="nav-link btn btn-link text-danger w-100 text-start ps-0" onClick={handleLogout}>
+                                        <Logout sx={{ mr: 1, fontSize: 20 }} />
+                                        <b>Logout</b>
+                                    </button>
+                                </li>
+                            </ul>
                         </>
                     ) : (
                         <>

@@ -38,6 +38,11 @@ const userService = {
     });
     return response.data;
   },
+  
+  getStats: async () => {
+    const response = await api.get("/admin/stats");
+    return response.data;
+  },
 };
 
 export default userService;

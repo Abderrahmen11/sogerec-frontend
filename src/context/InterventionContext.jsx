@@ -72,6 +72,21 @@ export function InterventionProvider({ children }) {
 
     }, [interventions, selectedIntervention]);
 
+    const updateInterventionStatus = useCallback(async (id, status) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await interventionService.updateStatus(id, status);
+            setInterventions(interventions.map(i => i.id === id ? { ...i, status: status } : i));
+            return data;
+        } catch (err) {
+            setError(err.message || 'Failed to update intervention status');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, [interventions]);
+
     const value = {
         interventions,
         selectedIntervention,
@@ -81,6 +96,7 @@ export function InterventionProvider({ children }) {
         fetchInterventionById,
         createIntervention,
         updateIntervention,
+        updateInterventionStatus,
     };
 
     return <InterventionContext.Provider value={value}>{children}</InterventionContext.Provider>;

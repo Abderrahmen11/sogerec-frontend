@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 
 const Tickets = () => {
     const { tickets, loading, fetchTickets } = useTickets();
-    const { isAdmin } = useAuth();
+    const { isAdmin, isTechnician } = useAuth();
     const [filterStatus, setFilterStatus] = useState('all');
     const [filterPriority, setFilterPriority] = useState('all');
 
@@ -63,9 +63,11 @@ const Tickets = () => {
                                     {filteredTickets.length} ticket{filteredTickets.length !== 1 ? 's' : ''} found
                                 </p>
                             </div>
-                            <Link to="/create-ticket" className="btn custom-btn" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff', fontWeight: '600' }}>
-                                <AddCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 20 }} />New Request
-                            </Link>
+                            {!isTechnician() && (
+                                <Link to="/create-ticket" className="btn custom-btn" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff', fontWeight: '600' }}>
+                                    <AddCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 20 }} />New Request
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -156,9 +158,11 @@ const Tickets = () => {
                             <div className="text-center py-5">
                                 <Inbox sx={{ fontSize: '3rem', color: '#ccc', display: 'block', mx: 'auto', mb: 2 }} />
                                 <p className="mt-3 text-muted">No tickets found matching your filters</p>
-                                <Link to="/create-ticket" className="btn custom-btn mt-3" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff' }}>
-                                    Create Your First Request
-                                </Link>
+                                {!isTechnician() && (
+                                    <Link to="/create-ticket" className="btn custom-btn mt-3" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff' }}>
+                                        Create Your First Request
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>

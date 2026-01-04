@@ -29,7 +29,7 @@ const Register = () => {
         }
         try {
             await register(formData);
-            navigate('/login');
+            navigate('/dashboard');
         } catch (err) {
             setErrors({ form: err.message || 'Registration failed' });
         }

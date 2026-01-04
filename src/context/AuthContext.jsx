@@ -68,6 +68,8 @@ export function AuthProvider({ children }) {
         setError(null);
         try {
             const data = await authService.register(userData);
+            setUser(data.user);
+            setIsAuthenticated(true);
             return data;
         } catch (err) {
             setError(err.message || 'Registration failed');
