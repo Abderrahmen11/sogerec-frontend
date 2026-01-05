@@ -38,32 +38,56 @@ const DashboardAdmin = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const fetchAllData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await userService.getStats();
+            // Backend returns { success: true, data: { ... } }
+            setStats(response.data);
+            await fetchInterventions();
+        } catch (err) {
+            console.error("Error fetching dashboard data", err);
+            const errorMessage = err.response?.data?.message || "Failed to load dashboard data. Please try again later.";
+            setError(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Fetch all data
     useEffect(() => {
-        const fetchAllData = async () => {
-            setLoading(true);
-            try {
-                const statsData = await userService.getStats();
-                setStats(statsData);
-                await fetchInterventions();
-            } catch (err) {
-                console.error("Error fetching dashboard data", err);
-                setError("Failed to load dashboard data. Please try again later.");
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchAllData();
     }, [fetchInterventions]);
 
-    if (loading) return <div className="text-center p-5"><div className="spinner-border text-primary" role="status"></div><p className="mt-2">Loading statistics...</p></div>;
-    if (error) return <div className="alert alert-danger m-5">{error}</div>;
+    if (loading) return (
+        <div className="text-center p-5">
+            <div className="spinner-border text-primary" role="status"></div>
+            <p className="mt-2 text-muted">Analyzing system statistics...</p>
+        </div>
+    );
+
+    if (error) return (
+        <div className="container mt-5">
+            <div className="alert alert-danger shadow-sm border-0 d-flex flex-column align-items-center p-5">
+                <h4 className="alert-heading mb-3">Dashboard Error</h4>
+                <p>{error}</p>
+                <hr className="w-100" />
+                <button
+                    className="btn btn-outline-danger px-4 mt-3"
+                    onClick={fetchAllData}
+                >
+                    Retry Loading Data
+                </button>
+            </div>
+        </div>
+    );
 
     const requestsChartData = {
-        labels: stats.charts.requests.labels,
+        labels: stats?.charts?.requests?.labels || [],
         datasets: [{
             label: 'Requests',
-            data: stats.charts.requests.data,
+            data: stats?.charts?.requests?.data || [],
             borderColor: '#0d6efd',
             backgroundColor: 'rgba(13, 110, 253, 0.1)',
             fill: true,
@@ -72,70 +96,70 @@ const DashboardAdmin = () => {
     };
 
     const techChartData = {
-        labels: stats.charts.technicians.labels,
+        labels: stats?.charts?.technicians?.labels || [],
         datasets: [{
             label: 'Interventions Completed',
-            data: stats.charts.technicians.data,
+            data: stats?.charts?.technicians?.data || [],
             backgroundColor: '#198754'
         }]
     };
 
     const categoryChartData = {
-        labels: stats.charts.categories.labels,
+        labels: stats?.charts?.categories?.labels || [],
         datasets: [{
-            data: stats.charts.categories.data,
+            data: stats?.charts?.categories?.data || [],
             backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6610f2', '#fd7e14']
         }]
     };
 
     return (
-        <div id="admin-dashboard">
+        <div id="admin-dashboard" className="fade-in">
             <main className="section-padding">
                 <div className="container">
                     <div className="row g-4">
                         {/* Summary Cards */}
                         <div className="col-lg-4 col-md-6 col-12">
-                            <div className="custom-block bg-primary text-white shadow-lg p-4 h-100 text-center">
-                                <h5 className="mb-2">Total Clients</h5>
-                                <p className="display-6 fw-bold">{stats.stats.usersCount}</p>
-                                <span className="badge bg-light text-primary">Active</span>
+                            <div className="custom-block bg-primary text-white shadow-lg p-4 h-100 text-center border-0">
+                                <h5 className="mb-2 opacity-75">Total Clients</h5>
+                                <p className="display-6 fw-bold mb-0">{stats?.stats?.usersCount || 0}</p>
+                                <span className="small opacity-50">Active in system</span>
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6 col-12">
-                            <div className="custom-block bg-success text-white shadow-lg p-4 h-100 text-center">
-                                <h5 className="mb-2">Technicians</h5>
-                                <p className="display-6 fw-bold">{stats.stats.techniciansCount}</p>
-                                <span className="badge bg-light text-success">On Duty</span>
+                            <div className="custom-block bg-success text-white shadow-lg p-4 h-100 text-center border-0">
+                                <h5 className="mb-2 opacity-75">Technicians</h5>
+                                <p className="display-6 fw-bold mb-0">{stats?.stats?.techniciansCount || 0}</p>
+                                <span className="small opacity-50">Operational staff</span>
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6 col-12">
-                            <div className="custom-block bg-warning text-dark shadow-lg p-4 h-100 text-center">
-                                <h5 className="mb-2">Open Requests</h5>
-                                <p className="display-6 fw-bold">{stats.stats.openTicketsCount}</p>
-                                <span className="badge bg-light text-warning">Pending</span>
+                            <div className="custom-block bg-warning text-dark shadow-lg p-4 h-100 text-center border-0">
+                                <h5 className="mb-2 opacity-75">Open Requests</h5>
+                                <p className="display-6 fw-bold mb-0">{stats?.stats?.openTicketsCount || 0}</p>
+                                <span className="small opacity-50">Requiring attention</span>
                             </div>
                         </div>
 
                         {/* Chart: Requests */}
                         <div className="col-lg-6 col-12">
-                            <div className="custom-block bg-white shadow-lg p-4 h-100">
-                                <h5 className="mb-3">Service Requests (Last 7 Days)</h5>
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-0">
+                                <h5 className="mb-4 fw-bold">Service Requests (Last 7 Days)</h5>
                                 <Line data={requestsChartData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
                             </div>
                         </div>
 
                         {/* Chart: Technicians */}
                         <div className="col-lg-6 col-12">
-                            <div className="custom-block bg-white shadow-lg p-4 h-100">
-                                <h5 className="mb-3">Technician Performance</h5>
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-0">
+                                <h5 className="mb-4 fw-bold">Technician Performance</h5>
                                 <Bar data={techChartData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
                             </div>
                         </div>
 
                         {/* Chart: Categories */}
                         <div className="col-lg-6 col-12">
-                            <div className="custom-block bg-white shadow-lg p-4 h-100">
-                                <h5 className="mb-3">Requests by Category</h5>
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-0">
+                                <h5 className="mb-4 fw-bold">Requests by Category</h5>
                                 <div style={{ maxHeight: '300px', display: 'flex', justifyContent: 'center' }}>
                                     <Pie data={categoryChartData} options={{ responsive: true }} />
                                 </div>
@@ -144,17 +168,20 @@ const DashboardAdmin = () => {
 
                         {/* Notifications */}
                         <div className="col-lg-6 col-12">
-                            <div className="custom-block bg-white shadow-lg p-4 h-100">
-                                <h5 className="mb-3">Recent Activity</h5>
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-0">
+                                <h5 className="mb-4 fw-bold">Recent Activity</h5>
                                 <ul className="list-group list-group-flush">
-                                    {stats.notifications && stats.notifications.length > 0 ? (
+                                    {stats?.notifications && stats.notifications.length > 0 ? (
                                         stats.notifications.map((note, index) => (
-                                            <li key={index} className="list-group-item border-0 ps-0">
-                                                <span className="me-2">🔔</span> {note}
+                                            <li key={index} className="list-group-item border-0 ps-0 py-3">
+                                                <div className="d-flex">
+                                                    <span className="me-3 text-primary">●</span>
+                                                    <span className="text-muted small">{note}</span>
+                                                </div>
                                             </li>
                                         ))
                                     ) : (
-                                        <li className="list-group-item border-0 ps-0">No recent activity.</li>
+                                        <li className="list-group-item border-0 ps-0 text-muted italic">No recent activity detected.</li>
                                     )}
                                 </ul>
                             </div>
@@ -162,39 +189,39 @@ const DashboardAdmin = () => {
 
                         {/* Active Interventions */}
                         <div className="col-12">
-                            <div className="custom-block bg-white shadow-lg p-4">
-                                <h5 className="mb-3">Recent Interventions</h5>
+                            <div className="custom-block bg-white shadow-lg p-4 border-0">
+                                <h5 className="mb-4 fw-bold">Recent Interventions</h5>
                                 <div className="table-responsive">
-                                    <table className="table table-hover">
-                                        <thead>
+                                    <table className="table table-hover align-middle">
+                                        <thead className="table-light">
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Status</th>
-                                                <th>Technician</th>
-                                                <th>Ticket</th>
-                                                <th>Scheduled</th>
+                                                <th className="border-0">ID</th>
+                                                <th className="border-0">Status</th>
+                                                <th className="border-0">Technician</th>
+                                                <th className="border-0">Ticket</th>
+                                                <th className="border-0 text-end">Scheduled</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {interventions && interventions.length > 0 ? (
                                                 interventions.slice(0, 5).map(intervention => (
                                                     <tr key={intervention.id}>
-                                                        <td>#{intervention.id}</td>
+                                                        <td className="fw-bold">#{intervention.id}</td>
                                                         <td>
-                                                            <span className={`badge bg-${intervention.status === 'completed' ? 'success' :
+                                                            <span className={`badge px-3 rounded-pill bg-${intervention.status === 'completed' ? 'success' :
                                                                 intervention.status === 'in_progress' ? 'warning' : 'primary'
                                                                 }`}>
-                                                                {intervention.status}
+                                                                {intervention.status?.replace('_', ' ')}
                                                             </span>
                                                         </td>
-                                                        <td>{intervention.user?.name || 'N/A'}</td>
-                                                        <td>{intervention.ticket?.title || 'N/A'}</td>
-                                                        <td>{intervention.scheduled_at ? new Date(intervention.scheduled_at).toLocaleDateString() : '-'}</td>
+                                                        <td className="text-muted">{intervention.user?.name || 'N/A'}</td>
+                                                        <td className="text-truncate" style={{ maxWidth: '200px' }}>{intervention.ticket?.title || 'N/A'}</td>
+                                                        <td className="text-end text-muted small">{intervention.scheduled_at ? new Date(intervention.scheduled_at).toLocaleDateString() : '-'}</td>
                                                     </tr>
                                                 ))
                                             ) : (
                                                 <tr>
-                                                    <td colSpan="5" className="text-center">No interventions found.</td>
+                                                    <td colSpan="5" className="text-center py-5 text-muted">No interventions found.</td>
                                                 </tr>
                                             )}
                                         </tbody>
