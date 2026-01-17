@@ -5,17 +5,12 @@ import { Twitter, Facebook, Pinterest, Bookmark } from '@mui/icons-material';
 const Services = () => {
     return (
         <main>
-            <header className="site-header d-flex flex-column justify-content-center align-items-center">
+            <header className="site-header hero-section d-flex flex-column justify-content-center align-items-center">
                 <div className="container">
                     <div className="row align-items-center">
-                        <div className="col-lg-5 col-12">
-                            <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><Link to="/">Homepage</Link></li>
-                                    <li className="breadcrumb-item active" aria-current="page">Service Listing</li>
-                                </ol>
-                            </nav>
+                        <div className="col-lg-8 col-12 mx-auto text-center">
                             <h2 className="text-white">Our Maintenance Services</h2>
+                            <p className="text-light">Professional, reliable, and efficient solutions for all your technical maintenance needs.</p>
                         </div>
                     </div>
                 </div>
@@ -32,14 +27,16 @@ const Services = () => {
                             {/* Service 1 */}
                             <div className="custom-block custom-block-topics-listing bg-white shadow-lg mb-5">
                                 <div className="d-flex">
-                                    <img src="/images/topics/undraw_Remote_design_team_re_urdx.png" className="custom-block-image img-fluid" alt="" />
-                                    <div className="custom-block-topics-listing-info d-flex">
-                                        <div>
-                                            <h5 className="mb-2">Electrical Maintenance</h5>
-                                            <p className="mb-0">From inspections to urgent repairs, our team ensures all electrical systems are safe and fully operational.</p>
-                                            <Link to="/service-details" className="btn custom-btn mt-3 mt-lg-4">Learn More</Link>
+                                    <img src="/images/topics/undraw_Remote_design_team_re_urdx.png" className="custom-block-image img-fluid" alt="Electrical Maintenance" />
+                                    <div className="custom-block-topics-listing-info d-flex flex-column w-100">
+                                        <div className="d-flex align-items-center mb-2">
+                                            <h5 className="mb-0">Electrical Maintenance</h5>
+                                            <span className="badge bg-primary rounded-pill ms-auto">12</span>
                                         </div>
-                                        <span className="badge bg-design rounded-pill ms-auto">12</span>
+                                        <p className="mb-0">From inspections to urgent repairs, our team ensures all electrical systems are safe and fully operational.</p>
+                                        <div className="mt-auto">
+                                            <Link to="/service-details" className="btn custom-btn mt-3">Learn More</Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -47,14 +44,16 @@ const Services = () => {
                             {/* Service 2 */}
                             <div className="custom-block custom-block-topics-listing bg-white shadow-lg mb-5">
                                 <div className="d-flex">
-                                    <img src="/images/topics/undraw_online_ad_re_ol62.png" className="custom-block-image img-fluid" alt="" />
-                                    <div className="custom-block-topics-listing-info d-flex">
-                                        <div>
-                                            <h5 className="mb-2">Equipment Installation</h5>
-                                            <p className="mb-0">We handle installation of industrial equipment with precision, ensuring safety and compliance standards.</p>
-                                            <Link to="/service-details" className="btn custom-btn mt-3 mt-lg-4">Learn More</Link>
+                                    <img src="/images/topics/undraw_online_ad_re_ol62.png" className="custom-block-image img-fluid" alt="Equipment Installation" />
+                                    <div className="custom-block-topics-listing-info d-flex flex-column w-100">
+                                        <div className="d-flex align-items-center mb-2">
+                                            <h5 className="mb-0">Equipment Installation</h5>
+                                            <span className="badge bg-primary rounded-pill ms-auto">18</span>
                                         </div>
-                                        <span className="badge bg-advertising rounded-pill ms-auto">18</span>
+                                        <p className="mb-0">We handle installation of industrial equipment with precision, ensuring safety and compliance standards.</p>
+                                        <div className="mt-auto">
+                                            <Link to="/service-details" className="btn custom-btn mt-3">Learn More</Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -62,14 +61,16 @@ const Services = () => {
                             {/* Service 3 */}
                             <div className="custom-block custom-block-topics-listing bg-white shadow-lg mb-5">
                                 <div className="d-flex">
-                                    <img src="/images/topics/it.png" className="custom-block-image img-fluid" alt="" />
-                                    <div className="custom-block-topics-listing-info d-flex">
-                                        <div>
-                                            <h5 className="mb-2">IT & Network Support</h5>
-                                            <p className="mb-0">Our technicians provide troubleshooting, system maintenance, and IT support for smooth daily operations.</p>
-                                            <Link to="/service-details" className="btn custom-btn mt-3 mt-lg-4">Learn More</Link>
+                                    <img src="/images/topics/it.png" className="custom-block-image img-fluid" alt="IT & Network Support" />
+                                    <div className="custom-block-topics-listing-info d-flex flex-column w-100">
+                                        <div className="d-flex align-items-center mb-2">
+                                            <h5 className="mb-0">IT & Network Support</h5>
+                                            <span className="badge bg-primary rounded-pill ms-auto">25</span>
                                         </div>
-                                        <span className="badge bg-music rounded-pill ms-auto">25</span>
+                                        <p className="mb-0">Our technicians provide troubleshooting, system maintenance, and IT support for smooth daily operations.</p>
+                                        <div className="mt-auto">
+                                            <Link to="/service-details" className="btn custom-btn mt-3">Learn More</Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -116,14 +117,14 @@ const Services = () => {
                         <div className="col-lg-6 col-md-6 col-12 mt-3 mb-4 mb-lg-0">
                             <div className="custom-block bg-white shadow-lg">
                                 <Link to="/service-details">
-                                    <div className="d-flex">
+                                    <div className="d-flex align-items-center">
                                         <div>
                                             <h5 className="mb-2">Preventive Maintenance</h5>
                                             <p className="mb-0">Regular check-ups that reduce failures and increase the lifespan of equipment.</p>
                                         </div>
-                                        <span className="badge bg-finance rounded-pill ms-auto">22</span>
+                                        <span className="badge bg-primary rounded-pill ms-auto">22</span>
                                     </div>
-                                    <img src="/images/topics/undraw_Finance_re_gnv2.png" className="custom-block-image img-fluid" alt="" />
+                                    <img src="/images/topics/undraw_Finance_re_gnv2.png" className="custom-block-image img-fluid" alt="Preventive Maintenance" />
                                 </Link>
                             </div>
                         </div>
@@ -132,14 +133,16 @@ const Services = () => {
                         <div className="col-lg-6 col-md-6 col-12 mt-lg-3">
                             <div className="custom-block custom-block-overlay">
                                 <div className="d-flex flex-column h-100">
-                                    <img src="/images/techTeam.png" className="custom-block-image img-fluid" alt="" />
-                                    <div className="custom-block-overlay-text d-flex">
-                                        <div>
-                                            <h5 className="text-white mb-2">Emergency Interventions</h5>
-                                            <p className="text-white">Our technicians are available for urgent calls to minimize downtime and ensure quick problem resolution.</p>
-                                            <Link to="/service-details" className="btn custom-btn mt-2 mt-lg-3">Learn More</Link>
+                                    <img src="/images/techTeam.png" className="custom-block-image img-fluid" alt="Emergency Interventions" />
+                                    <div className="custom-block-overlay-text d-flex flex-column h-100">
+                                        <div className="d-flex align-items-center mb-2">
+                                            <h5 className="text-white mb-0">Emergency Interventions</h5>
+                                            <span className="badge bg-primary rounded-pill ms-auto">15</span>
                                         </div>
-                                        <span className="badge bg-finance rounded-pill ms-auto">15</span>
+                                        <p className="text-white">Our technicians are available for urgent calls to minimize downtime and ensure quick problem resolution.</p>
+                                        <div className="mt-auto">
+                                            <Link to="/service-details" className="btn custom-btn mt-2">Learn More</Link>
+                                        </div>
                                     </div>
                                     <div className="social-share d-flex">
                                         <p className="text-white me-4">Share:</p>

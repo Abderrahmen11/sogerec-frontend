@@ -19,24 +19,18 @@ const TicketDetails = () => {
             <header className="site-header d-flex flex-column justify-content-center align-items-center">
                 <div className="container">
                     <div className="row justify-content-center align-items-center">
-                        <div className="col-lg-8 col-12 text-center">
-                            <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb justify-content-center">
-                                    <li className="breadcrumb-item"><Link to="/">Homepage</Link></li>
-                                    <li className="breadcrumb-item"><Link to="/tickets">My Requests</Link></li>
-                                    <li className="breadcrumb-item active" aria-current="page">Ticket #{selectedTicket.id}</li>
-                                </ol>
-                            </nav>
-                            <h2 className="text-white mb-4">{selectedTicket.title}</h2>
+                        <div className="col-lg-8 col-12 mx-auto text-center">
+                            <h2 className="text-white mb-2">{selectedTicket.title}</h2>
+                            <p className="text-light mb-4">Tracking request details and technical updates for your maintenance intervention.</p>
                             <div className="d-flex justify-content-center gap-3">
                                 <span className={`badge bg-${selectedTicket.status === 'resolved' ? 'primary' :
-                                        selectedTicket.status === 'in_progress' ? 'info' :
-                                            selectedTicket.status === 'closed' ? 'secondary' : 'warning'
+                                    selectedTicket.status === 'in_progress' ? 'info' :
+                                        selectedTicket.status === 'closed' ? 'secondary' : 'warning'
                                     } fs-6`}>
                                     {selectedTicket.status}
                                 </span>
                                 <span className={`badge bg-${selectedTicket.priority === 'high' ? 'danger' :
-                                        selectedTicket.priority === 'medium' ? 'primary' : 'success'
+                                    selectedTicket.priority === 'medium' ? 'primary' : 'success'
                                     } fs-6`}>
                                     {selectedTicket.priority} Priority
                                 </span>

@@ -316,10 +316,45 @@ a:hover {
     border-radius: 5px !important;
     display: flex;
     justify-content: center;
+    align-items: center;
     text-align: center;
-    width: 30px;
-    height: 30px;
-    line-height: 20px;
+    width: 35px;
+    height: 35px;
+}
+
+.custom-block-topics-listing {
+    height: inherit;
+    padding: 0;
+}
+
+.custom-block-topics-listing .d-flex {
+    align-items: center;
+}
+
+.custom-block-topics-listing .custom-block-image {
+    width: 250px;
+    height: 100%;
+    margin-top: 0;
+    object-fit: cover;
+}
+
+.custom-block-topics-listing-info {
+    padding: 30px;
+}
+
+@media screen and (max-width: 767px) {
+    .custom-block-topics-listing .d-flex {
+        flex-direction: column;
+    }
+
+    .custom-block-topics-listing .custom-block-image {
+        width: 100%;
+        height: 200px;
+    }
+
+    .custom-block-topics-listing-info {
+        width: 100%;
+    }
 }
 
 .custom-block-overlay {

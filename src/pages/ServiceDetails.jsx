@@ -8,15 +8,10 @@ const ServiceDetails = () => {
             <header className="site-header d-flex flex-column justify-content-center align-items-center">
                 <div className="container">
                     <div className="row justify-content-center align-items-center">
-                        <div className="col-lg-5 col-12 mb-5">
-                            <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><Link to="/">Homepage</Link></li>
-                                    <li className="breadcrumb-item active" aria-current="page">Maintenance Service</li>
-                                </ol>
-                            </nav>
-                            <h2 className="text-white">Detailed Guide to <br /> Technical Maintenance</h2>
-                            <div className="d-flex align-items-center mt-5">
+                        <div className="col-lg-8 col-12 mx-auto text-center">
+                            <h2 className="text-white">Detailed Guide to Technical Maintenance</h2>
+                            <p className="text-light">Everything you need to know about our technical support and maintenance protocols.</p>
+                            <div className="d-flex justify-content-center align-items-center mt-5">
                                 <a href="#service-detail" className="btn custom-btn custom-border-btn smoothscroll me-4">Read More</a>
                                 <a href="#top" className="custom-icon smoothscroll">
                                     <Bookmark sx={{ fontSize: '1.5rem', color: '#fff' }} />

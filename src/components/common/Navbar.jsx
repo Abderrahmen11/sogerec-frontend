@@ -242,11 +242,6 @@ const Navbar = () => {
                                         Services
                                     </Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className={`nav-link ${isActive('/get-started') ? 'active' : ''}`} to="/get-started" onClick={handleNavClick}>
-                                        Get Started
-                                    </Link>
-                                </li>
                             </ul>
                             <div className="d-none d-lg-block">
                                 <Link to="/login" className="btn btn-primary me-2">Login</Link>
