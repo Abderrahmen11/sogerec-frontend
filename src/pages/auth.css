@@ -1,6 +1,8 @@
 .auth-container {
     background: linear-gradient(15deg, #020381 0%, #1299dd 100%);
     padding: 3rem 0;
+    padding-top: 100px;
+    /* Clear fixed navbar */
     min-height: 100vh;
     display: flex;
     align-items: center;

@@ -20,6 +20,7 @@ const Tickets = lazy(() => import('../pages/Tickets'));
 const TicketDetails = lazy(() => import('../pages/TicketDetails'));
 const CreateTicket = lazy(() => import('../pages/CreateTicket'));
 const Interventions = lazy(() => import('../pages/Interventions'));
+const InterventionDetails = lazy(() => import('../pages/InterventionDetails'));
 const Planning = lazy(() => import('../pages/Planning'));
 const Reports = lazy(() => import('../pages/Reports'));
 const Users = lazy(() => import('../pages/Users'));
@@ -80,6 +81,14 @@ const AppRouter = () => (
                     element={
                         <PrivateRoute roles={['technician', 'admin', 'client', 'user']}>
                             <Interventions />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/interventions/:id"
+                    element={
+                        <PrivateRoute roles={['technician', 'admin', 'client', 'user']}>
+                            <InterventionDetails />
                         </PrivateRoute>
                     }
                 />

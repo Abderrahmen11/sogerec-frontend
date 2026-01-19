@@ -49,7 +49,7 @@ const Tickets = () => {
     }) || [];
 
     return (
-        <main className="container-fluid py-5" style={{ minHeight: '100vh' }}>
+        <main className="section-padding">
             <div className="container">
                 {/* Page Header */}
                 <div className="row mb-5">

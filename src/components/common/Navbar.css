@@ -1,14 +1,23 @@
 /* Navbar styling matching native template */
 .navbar {
-    background: transparent;
+    background: var(--secondary-color);
+    /* Default visible background */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 999;
     padding: 1rem 0;
     transition: all 0.5s ease;
     position: fixed;
-    /* Changed from sticky to fixed for better overlay on hero sections */
     top: 0;
     width: 100%;
+}
+
+/* Visibility rules for Dashboard pages */
+.navbar.navbar-dashboard {
+    background: transparent;
+}
+
+.navbar.navbar-dashboard.navbar-sticky {
+    background-color: var(--secondary-color);
 }
 
 .navbar.navbar-sticky {

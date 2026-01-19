@@ -5,6 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import useNotifications from '../../hooks/useNotifications';
 import useRoleAccess from '../../hooks/useRoleAccess';
 import useStickyNavbar from '../../hooks/useStickyNavbar';
+import ConfirmDialog from './ConfirmDialog';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -15,8 +16,10 @@ const Navbar = () => {
     const { isAdmin, isTechnician } = useRoleAccess();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [navbarExpanded, setNavbarExpanded] = useState(false);
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const dropdownRef = useRef(null);
     const isSticky = useStickyNavbar(50);
+    const isTransparentPage = location.pathname.includes('/dashboard') || location.pathname.includes('/services');
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -35,7 +38,12 @@ const Navbar = () => {
         };
     }, [dropdownOpen]);
 
-    const handleLogout = async () => {
+    const handleLogoutClick = () => {
+        setShowLogoutConfirm(true);
+    };
+
+    const handleConfirmLogout = async () => {
+        setShowLogoutConfirm(false);
         try {
             await logout();
             navigate('/login', { replace: true });
@@ -43,6 +51,10 @@ const Navbar = () => {
             console.error('Logout error:', error);
             navigate('/login', { replace: true });
         }
+    };
+
+    const handleCancelLogout = () => {
+        setShowLogoutConfirm(false);
     };
 
     const handleNavClick = () => {
@@ -61,7 +73,7 @@ const Navbar = () => {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <nav className={`navbar navbar-expand-lg ${isSticky ? 'navbar-sticky' : ''}`}>
+        <nav className={`navbar navbar-expand-lg ${isSticky ? 'navbar-sticky' : ''} ${isTransparentPage ? 'navbar-dashboard' : ''}`}>
             <div className="container">
                 <Link className="navbar-brand" to={isAuthenticated ? "/dashboard" : "/"} onClick={handleNavClick}>
                     <Build sx={{ mr: 1, verticalAlign: 'middle' }} />
@@ -188,12 +200,6 @@ const Navbar = () => {
                                                         Reports
                                                     </Link>
                                                 </li>
-                                                <li><hr className="dropdown-divider" /></li>
-                                                <li>
-                                                    <button className="dropdown-item text-danger" onClick={handleLogout}>
-                                                        Logout
-                                                    </button>
-                                                </li>
                                             </ul>
                                         </li>
                                     </>
@@ -210,7 +216,7 @@ const Navbar = () => {
                                     )}
                                 </Link>
                                 <button
-                                    onClick={handleLogout}
+                                    onClick={handleLogoutClick}
                                     className="navbar-icon border-0 bg-transparent text-danger desktop-logout-btn"
                                     title="Logout"
                                     aria-label="Logout"
@@ -222,7 +228,7 @@ const Navbar = () => {
                             {/* Mobile logout for non-admin users */}
                             <ul className="navbar-nav d-lg-none">
                                 <li className="nav-item">
-                                    <button className="nav-link btn btn-link text-danger w-100 text-start ps-0" onClick={handleLogout}>
+                                    <button className="nav-link btn btn-link text-danger w-100 text-start ps-0" onClick={handleLogoutClick}>
                                         <Logout sx={{ mr: 1, fontSize: 20 }} />
                                         <b>Logout</b>
                                     </button>
@@ -259,6 +265,16 @@ const Navbar = () => {
                     )}
                 </div>
             </div>
+            {showLogoutConfirm && (
+                <ConfirmDialog
+                    title="Logout Confirmation"
+                    message="Are you sure you want to log out?"
+                    onConfirm={handleConfirmLogout}
+                    onCancel={handleCancelLogout}
+                    confirmText="Logout"
+                    cancelText="Cancel"
+                />
+            )}
         </nav>
     );
 };

@@ -115,7 +115,6 @@ const GetStarted = () => {
                                     <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#1299dd' }} /> View service history</li>
                                     <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#1299dd' }} /> Communicate with technicians</li>
                                 </ul>
-                                <Link to="/login" className="btn btn-lg" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff' }}>Continue as Client</Link>
                             </div>
                         </div>
 
@@ -133,7 +132,6 @@ const GetStarted = () => {
                                     <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#0073b3' }} /> Monitor service progress</li>
                                     <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#0073b3' }} /> Generate reports</li>
                                 </ul>
-                                <Link to="/login" className="btn btn-lg" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff' }}>Continue as Admin</Link>
                             </div>
                         </div>
 
@@ -151,7 +149,6 @@ const GetStarted = () => {
                                     <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#00a6ff' }} /> Manage schedule</li>
                                     <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#00a6ff' }} /> Document work completed</li>
                                 </ul>
-                                <Link to="/login" className="btn btn-lg" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff' }}>Continue as Technician</Link>
                             </div>
                         </div>
                     </div>
