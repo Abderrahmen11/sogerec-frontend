@@ -15,7 +15,8 @@ const Interventions = () => {
 
     const getStatusBadgeColor = (status) => {
         switch (status) {
-            case 'planned': return '#0073b3';
+            case 'pending': return '#ffc107'; // Warning yellow
+            case 'scheduled': return '#0073b3';
             case 'in_progress': return '#1299dd';
             case 'completed': return '#198754';
             case 'cancelled': return '#dc3545';
@@ -64,7 +65,8 @@ const Interventions = () => {
                             style={{ borderColor: '#7fffd4' }}
                         >
                             <option value="all">All Statuses</option>
-                            <option value="planned">Planned</option>
+                            <option value="pending">Pending</option>
+                            <option value="scheduled">Scheduled</option>
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
                             <option value="cancelled">Cancelled</option>

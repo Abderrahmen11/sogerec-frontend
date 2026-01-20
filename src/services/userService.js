@@ -43,6 +43,12 @@ const userService = {
     const response = await api.get("/admin/stats");
     return response.data;
   },
+
+  getTechnicians: async () => {
+    const response = await api.get("/users?role=technician");
+    return response.data;
+  },
 };
+
 
 export default userService;

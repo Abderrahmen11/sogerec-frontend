@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     CheckCircle,
     Error,
@@ -9,12 +10,14 @@ import {
     Person,
     Schedule,
     Delete,
-    MarkEmailRead
+    MarkEmailRead,
+    Visibility
 } from '@mui/icons-material';
 import useNotifications from '../../hooks/useNotifications';
 
 const NotificationItem = ({ notification }) => {
     const { markAsRead, deleteNotification } = useNotifications();
+    const navigate = useNavigate();
 
     // Safe check for notification
     if (!notification) {
@@ -24,21 +27,15 @@ const NotificationItem = ({ notification }) => {
     // Determine icon and color based on notification type
     const getNotificationIcon = (type) => {
         switch (type) {
-            case 'App\\Notifications\\TicketCreated':
-            case 'ticket_created':
+            case 'App\\Notifications\\NewTicketNotification':
+            case 'new_ticket':
                 return { icon: <Assignment />, color: '#0d6efd' };
-            case 'App\\Notifications\\TicketAssigned':
-            case 'ticket_assigned':
+            case 'App\\Notifications\\InterventionAssignedNotification':
+            case 'intervention_assigned':
                 return { icon: <Person />, color: '#6610f2' };
-            case 'App\\Notifications\\InterventionScheduled':
-            case 'intervention_scheduled':
+            case 'App\\Notifications\\InterventionStatusUpdatedNotification':
+            case 'intervention_status_updated':
                 return { icon: <Schedule />, color: '#fd7e14' };
-            case 'App\\Notifications\\InterventionCompleted':
-            case 'intervention_completed':
-                return { icon: <CheckCircle />, color: '#198754' };
-            case 'App\\Notifications\\TicketStatusChanged':
-            case 'ticket_status':
-                return { icon: <Build />, color: '#0dcaf0' };
             case 'success':
                 return { icon: <CheckCircle />, color: '#198754' };
             case 'error':
@@ -81,8 +78,26 @@ const NotificationItem = ({ notification }) => {
     }
 
     const title = data?.title || data?.message || 'Notification';
-    const message = data?.body || data?.description || '';
-    const actionUrl = data?.action_url || data?.url;
+    const message = data?.body || data?.description || (data?.message !== title ? data?.message : '');
+
+    // Determine redirect URL based on data
+    const getRedirectUrl = () => {
+        if (data.intervention_id) return `/interventions/${data.intervention_id}`;
+        if (data.ticket_id) return `/tickets/${data.ticket_id}`;
+        return null;
+    };
+
+
+    const redirectUrl = getRedirectUrl();
+
+    const handleNotificationClick = () => {
+        if (isUnread) {
+            markAsRead(notification.id);
+        }
+        if (redirectUrl) {
+            navigate(redirectUrl);
+        }
+    };
 
     const handleMarkAsRead = async (e) => {
         e.stopPropagation();
@@ -108,11 +123,13 @@ const NotificationItem = ({ notification }) => {
 
     return (
         <div
-            className={`card mb-3 shadow-sm ${isUnread ? 'border-primary' : ''}`}
+            className={`card mb-3 shadow-sm notification-item ${isUnread ? 'border-primary' : ''}`}
+            onClick={handleNotificationClick}
             style={{
-                borderLeft: `4px solid ${color}`,
-                backgroundColor: isUnread ? '#f8f9fa' : '#ffffff',
-                transition: 'all 0.3s ease'
+                borderLeft: `5px solid ${color}`,
+                backgroundColor: isUnread ? '#f0f7ff' : '#ffffff',
+                transition: 'all 0.3s ease',
+                cursor: redirectUrl ? 'pointer' : 'default'
             }}
         >
             <div className="card-body">
@@ -123,8 +140,8 @@ const NotificationItem = ({ notification }) => {
                         style={{
                             width: '48px',
                             height: '48px',
-                            borderRadius: '50%',
-                            backgroundColor: `${color}20`,
+                            borderRadius: '12px',
+                            backgroundColor: `${color}15`,
                             color: color,
                             flexShrink: 0
                         }}
@@ -134,51 +151,47 @@ const NotificationItem = ({ notification }) => {
 
                     {/* Content */}
                     <div className="flex-grow-1">
-                        <div className="d-flex justify-content-between align-items-start mb-2">
-                            <h6 className="mb-0" style={{ fontWeight: isUnread ? '600' : '400' }}>
+                        <div className="d-flex justify-content-between align-items-start mb-1">
+                            <h6 className="mb-0" style={{
+                                fontWeight: isUnread ? '700' : '500',
+                                color: isUnread ? '#000' : '#444'
+                            }}>
                                 {title}
-                                {isUnread && (
-                                    <span className="badge bg-primary ms-2" style={{ fontSize: '0.7rem' }}>New</span>
-                                )}
                             </h6>
-                            <small className="text-muted">{getRelativeTime(notification.created_at)}</small>
+                            <small className="text-muted fw-bold" style={{ fontSize: '0.75rem' }}>
+                                {getRelativeTime(notification.created_at)}
+                            </small>
                         </div>
 
                         {message && (
-                            <p className="card-text text-muted mb-2" style={{ fontSize: '0.9rem' }}>
+                            <p className="card-text text-muted mb-2" style={{ fontSize: '0.85rem', lineHeight: '1.4' }}>
                                 {message}
                             </p>
                         )}
 
                         {/* Actions */}
                         <div className="d-flex gap-2 mt-2">
-                            {actionUrl && (
-                                <a
-                                    href={actionUrl}
-                                    className="btn btn-sm btn-outline-primary"
-                                    style={{ fontSize: '0.8rem' }}
+                            {redirectUrl && (
+                                <button
+                                    className="btn btn-sm btn-primary py-1 px-3 d-flex align-items-center gap-1"
+                                    style={{ fontSize: '0.75rem' }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleNotificationClick();
+                                    }}
                                 >
-                                    View Details
-                                </a>
+                                    <Visibility sx={{ fontSize: 14 }} /> View Details
+                                </button>
                             )}
                             {isUnread && (
                                 <button
                                     onClick={handleMarkAsRead}
-                                    className="btn btn-sm btn-outline-success"
-                                    style={{ fontSize: '0.8rem' }}
+                                    className="btn btn-sm btn-outline-secondary py-1 px-3"
+                                    style={{ fontSize: '0.75rem' }}
                                 >
-                                    <MarkEmailRead sx={{ fontSize: 16, mr: 0.5 }} />
                                     Mark as Read
                                 </button>
                             )}
-                            <button
-                                onClick={handleDelete}
-                                className="btn btn-sm btn-outline-danger"
-                                style={{ fontSize: '0.8rem' }}
-                            >
-                                <Delete sx={{ fontSize: 16, mr: 0.5 }} />
-                                Delete
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -188,3 +201,4 @@ const NotificationItem = ({ notification }) => {
 };
 
 export default NotificationItem;
+

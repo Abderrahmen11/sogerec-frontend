@@ -87,6 +87,22 @@ export function InterventionProvider({ children }) {
         }
     }, [interventions]);
 
+    const submitInterventionReport = useCallback(async (id, report) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await interventionService.submitReport(id, report);
+            setInterventions(interventions.map(i => i.id === id ? { ...i, status: 'completed' } : i));
+            if (selectedIntervention?.id === id) setSelectedIntervention({ ...selectedIntervention, status: 'completed' });
+            return data;
+        } catch (err) {
+            setError(err.message || 'Failed to submit report');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, [interventions, selectedIntervention]);
+
     const value = {
         interventions,
         selectedIntervention,
@@ -97,7 +113,9 @@ export function InterventionProvider({ children }) {
         createIntervention,
         updateIntervention,
         updateInterventionStatus,
+        submitInterventionReport,
     };
+
 
     return <InterventionContext.Provider value={value}>{children}</InterventionContext.Provider>;
 }

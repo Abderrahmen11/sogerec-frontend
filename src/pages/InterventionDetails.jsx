@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Work, LocationOn, CalendarToday, Person, Description, Build } from '@mui/icons-material';
+import { Work, LocationOn, CalendarToday, Person, Description, Build, PlayArrow, CheckCircle, Assignment } from '@mui/icons-material';
 import useInterventions from '../hooks/useInterventions';
+import { AuthContext } from '../context/AuthContext';
+import { InterventionContext } from '../context/InterventionContext';
 
 const InterventionDetails = () => {
     const { id } = useParams();
     const { selectedIntervention, fetchInterventionById, loading, error } = useInterventions();
+    const { user } = useContext(AuthContext);
+    const { updateInterventionStatus, submitInterventionReport } = useContext(InterventionContext);
+    const [reportText, setReportText] = useState('');
+    const [showReportForm, setShowReportForm] = useState(false);
+    const [actionLoading, setActionLoading] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -13,9 +20,36 @@ const InterventionDetails = () => {
         }
     }, [id, fetchInterventionById]);
 
+    const handleStatusUpdate = async (newStatus) => {
+        setActionLoading(true);
+        try {
+            await updateInterventionStatus(id, newStatus);
+            fetchInterventionById(id);
+        } catch (err) {
+            console.error("Failed to update status:", err);
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const handleReportSubmit = async (e) => {
+        e.preventDefault();
+        setActionLoading(true);
+        try {
+            await submitInterventionReport(id, reportText);
+            setShowReportForm(false);
+            fetchInterventionById(id);
+        } catch (err) {
+            console.error("Failed to submit report:", err);
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
     const getStatusBadgeColor = (status) => {
         switch (status) {
-            case 'planned': return '#0073b3';
+            case 'pending': return '#ffc107'; // Warning yellow
+            case 'scheduled': return '#0073b3';
             case 'in_progress': return '#1299dd';
             case 'completed': return '#198754';
             case 'cancelled': return '#dc3545';
@@ -60,6 +94,10 @@ const InterventionDetails = () => {
         </div>
     );
 
+    const isAssignedTechnician = user?.id === selectedIntervention.user_id;
+    const isAdmin = user?.role === 'admin';
+    const canManage = isAssignedTechnician || isAdmin;
+
     return (
         <main>
             <header className="site-header d-flex flex-column justify-content-center align-items-center">
@@ -97,7 +135,7 @@ const InterventionDetails = () => {
 
                                         <div className="mb-4">
                                             <h6 className="text-uppercase text-muted small mb-1">Description</h6>
-                                            <p>{selectedIntervention.notes || selectedIntervention.description || 'No additional notes provided.'}</p>
+                                            <p className="lead">{selectedIntervention.notes || selectedIntervention.description || 'No additional notes provided.'}</p>
                                         </div>
 
                                         <div className="row">
@@ -144,15 +182,73 @@ const InterventionDetails = () => {
                                     </div>
                                 </div>
 
+                                {canManage && selectedIntervention.status !== 'completed' && selectedIntervention.status !== 'cancelled' && (
+                                    <div className="mt-4 p-4 bg-light rounded shadow-sm">
+                                        <h5 className="mb-3 d-flex align-items-center gap-2">
+                                            <Assignment color="primary" /> Actions
+                                        </h5>
+                                        <div className="d-flex gap-3 flex-wrap">
+                                            {selectedIntervention.status === 'scheduled' && (
+                                                <button
+                                                    className="btn btn-primary d-flex align-items-center gap-2 px-4 shadow-sm"
+                                                    onClick={() => handleStatusUpdate('in_progress')}
+                                                    disabled={actionLoading}
+                                                >
+                                                    <PlayArrow /> {actionLoading ? 'Updating...' : 'Start Intervention'}
+                                                </button>
+                                            )}
+
+                                            {selectedIntervention.status === 'in_progress' && (
+                                                <button
+                                                    className="btn btn-success d-flex align-items-center gap-2 px-4 shadow-sm"
+                                                    onClick={() => setShowReportForm(true)}
+                                                    disabled={actionLoading}
+                                                >
+                                                    <CheckCircle /> Mark as Completed
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {showReportForm && (
+                                            <div className="mt-4 card shadow-sm border-0">
+                                                <div className="card-header bg-success text-white">
+                                                    Submit Final Report
+                                                </div>
+                                                <form className="card-body" onSubmit={handleReportSubmit}>
+                                                    <div className="mb-3">
+                                                        <label className="form-label fw-bold">Intervention Report Details</label>
+                                                        <textarea
+                                                            className="form-control"
+                                                            value={reportText}
+                                                            onChange={(e) => setReportText(e.target.value)}
+                                                            required
+                                                            placeholder="Describe the work performed, replaced parts, and final results..."
+                                                            rows="4"
+                                                        ></textarea>
+                                                    </div>
+                                                    <div className="d-flex gap-2">
+                                                        <button type="submit" className="btn btn-success" disabled={actionLoading}>
+                                                            {actionLoading ? 'Submitting...' : 'Confirm & Complete'}
+                                                        </button>
+                                                        <button type="button" className="btn btn-outline-secondary" onClick={() => setShowReportForm(false)}>
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
                                 <hr className="my-4" />
 
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <Link to="/interventions" className="btn btn-outline-secondary">
+                                <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                    <Link to="/interventions" className="btn btn-outline-secondary px-4">
                                         Back to List
                                     </Link>
 
                                     {selectedIntervention.ticket?.id && (
-                                        <Link to={`/tickets/${selectedIntervention.ticket.id}`} className="btn btn-primary" style={{ backgroundColor: '#004598' }}>
+                                        <Link to={`/tickets/${selectedIntervention.ticket.id}`} className="btn btn-primary px-4" style={{ backgroundColor: '#004598' }}>
                                             View Related Ticket
                                         </Link>
                                     )}
@@ -167,3 +263,4 @@ const InterventionDetails = () => {
 };
 
 export default InterventionDetails;
+

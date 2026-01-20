@@ -10,7 +10,8 @@ const Planning = () => {
     const allInterventions = interventions || [];
 
     // Calculate summary stats by status
-    const plannedCount = allInterventions.filter(i => i.status === 'planned').length;
+    const pendingCount = allInterventions.filter(i => i.status === 'pending').length;
+    const scheduledCount = allInterventions.filter(i => i.status === 'scheduled').length;
     const inProgressCount = allInterventions.filter(i => i.status === 'in_progress').length;
     const completedCount = allInterventions.filter(i => i.status === 'completed').length;
     const cancelledCount = allInterventions.filter(i => i.status === 'cancelled').length;
@@ -26,7 +27,8 @@ const Planning = () => {
 
     const getStatusBadgeColor = (status) => {
         switch (status) {
-            case 'planned': return '#0073b3';
+            case 'pending': return '#ffc107'; // Warning yellow
+            case 'scheduled': return '#0073b3';
             case 'in_progress': return '#1299dd';
             case 'completed': return '#198754';
             case 'cancelled': return '#dc3545';
@@ -69,34 +71,37 @@ const Planning = () => {
                     </div>
                 </div>
 
-                {/* Summary Stats */}
                 <div className="row g-4 mb-5">
-                    <div className="col-lg-3 col-md-6 col-12">
-                        <div className="custom-block bg-primary text-white shadow-lg p-4 h-100 text-center">
-                            <h5 className="mb-2">Planned</h5>
-                            <p className="display-6 fw-bold">{plannedCount}</p>
-                            <span className="badge bg-light text-primary">Scheduled</span>
+                    <div className="col-lg-2 col-md-4 col-6">
+                        <div className="custom-block bg-warning text-dark shadow-sm p-3 h-100 text-center border-0">
+                            <h6 className="mb-2">Pending</h6>
+                            <h3 className="fw-bold mb-0">{pendingCount}</h3>
+                        </div>
+                    </div>
+                    <div className="col-lg-2 col-md-4 col-6">
+                        <div className="custom-block bg-primary text-white shadow-sm p-3 h-100 text-center border-0">
+                            <h6 className="mb-2">Scheduled</h6>
+                            <h3 className="fw-bold mb-0">{scheduledCount}</h3>
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-6 col-12">
-                        <div className="custom-block bg-info text-white shadow-lg p-4 h-100 text-center">
-                            <h5 className="mb-2">In Progress</h5>
-                            <p className="display-6 fw-bold">{inProgressCount}</p>
+                        <div className="custom-block bg-info text-white shadow-sm p-4 h-100 text-center border-0">
+                            <h5 className="mb-2 text-uppercase small ls-wide">In Progress</h5>
+                            <p className="display-6 fw-bold mb-2">{inProgressCount}</p>
                             <span className="badge bg-light text-info">Active</span>
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-6 col-12">
-                        <div className="custom-block bg-success text-white shadow-lg p-4 h-100 text-center">
-                            <h5 className="mb-2">Completed</h5>
-                            <p className="display-6 fw-bold">{completedCount}</p>
+                        <div className="custom-block bg-success text-white shadow-sm p-4 h-100 text-center border-0">
+                            <h5 className="mb-2 text-uppercase small ls-wide">Completed</h5>
+                            <p className="display-6 fw-bold mb-2">{completedCount}</p>
                             <span className="badge bg-light text-success">Done</span>
                         </div>
                     </div>
-                    <div className="col-lg-3 col-md-6 col-12">
-                        <div className="custom-block bg-danger text-white shadow-lg p-4 h-100 text-center">
-                            <h5 className="mb-2">Cancelled</h5>
-                            <p className="display-6 fw-bold">{cancelledCount}</p>
-                            <span className="badge bg-light text-danger">Closed</span>
+                    <div className="col-lg-2 col-md-4 col-12">
+                        <div className="custom-block bg-danger text-white shadow-sm p-3 h-100 text-center border-0">
+                            <h6 className="mb-2">Cancelled</h6>
+                            <h3 className="fw-bold mb-0">{cancelledCount}</h3>
                         </div>
                     </div>
                 </div>
