@@ -9,42 +9,23 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Initialize auth state by verifying server session on mount
+    // Initialize auth state from localStorage on mount
     useEffect(() => {
-        let mounted = true;
-        const initializeAuth = async () => {
-            try {
-                // First ensure CSRF token is obtained
-                await authService.getCsrfToken();
+        const initializeAuth = () => {
+            const token = authService.getToken();
+            const storedUser = authService.getCurrentUser();
 
-                // Then verify if user is authenticated with server
-                const serverUser = await authService.getAuthenticatedUser();
-
-                if (mounted) {
-                    if (serverUser) {
-                        setUser(serverUser);
-                        setIsAuthenticated(true);
-                    } else {
-                        setUser(null);
-                        setIsAuthenticated(false);
-                    }
-                }
-            } catch (err) {
-                if (mounted) {
-                    console.error('Auth initialization error:', err);
-                    setUser(null);
-                    setIsAuthenticated(false);
-                }
-            } finally {
-                if (mounted) setLoading(false);
+            if (token && storedUser) {
+                setUser(storedUser);
+                setIsAuthenticated(true);
+            } else {
+                setUser(null);
+                setIsAuthenticated(false);
             }
+            setLoading(false);
         };
 
         initializeAuth();
-
-        return () => {
-            mounted = false;
-        };
     }, []);
 
     const login = useCallback(async (email, password) => {

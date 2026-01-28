@@ -10,6 +10,7 @@ import {
     Title,
     Tooltip,
     Legend,
+    Filler,
 } from 'chart.js';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import useAuth from '../../hooks/useAuth';
@@ -28,7 +29,8 @@ ChartJS.register(
     ArcElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    Filler
 );
 
 const DashboardAdmin = () => {
