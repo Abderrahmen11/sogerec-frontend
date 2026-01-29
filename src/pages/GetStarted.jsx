@@ -160,7 +160,7 @@ const GetStarted = () => {
                     <div className="row justify-content-center">
                         <div className="col-lg-8 col-12 text-center mb-5">
                             <h2>Powerful Features</h2>
-                            <p>Discover how SogeFix can transform your maintenance management process</p>
+                            <p>Discover how Sogerec can transform your maintenance management process</p>
                         </div>
                     </div>
                     <div className="row">
@@ -251,7 +251,7 @@ const GetStarted = () => {
                     <div className="row">
                         <div className="col-lg-6 col-12">
                             <h2 className="mb-4">Get Support</h2>
-                            <p>Our team is here to help you with any questions or issues you may have with SogeFix.</p>
+                            <p>Our team is here to help you with any questions or issues you may have with Sogerec.</p>
                             <div className="mt-5">
                                 <div className="support-option mb-4">
                                     <h5>Documentation</h5>
@@ -260,7 +260,7 @@ const GetStarted = () => {
                                 </div>
                                 <div className="support-option mb-4">
                                     <h5>FAQs</h5>
-                                    <p>Find quick answers to frequently asked questions about using SogeFix.</p>
+                                    <p>Find quick answers to frequently asked questions about using Sogerec.</p>
                                     <Link to="#" className="btn custom-btn mt-2">View FAQs</Link>
                                 </div>
                                 <div className="support-option">

@@ -31,7 +31,7 @@ const Login = () => {
                 <div className="row justify-content-center align-items-center min-vh-100">
                     <div className="col-lg-6 col-md-8 col-12">
                         <div className="auth-card">
-                            <h2 className="mb-4 text-center">Login to SogeFix</h2>
+                            <h2 className="mb-4 text-center">Login to Sogerec</h2>
                             {(error || localError) && <div className="alert alert-danger">{error || localError}</div>}
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">

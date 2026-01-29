@@ -77,7 +77,7 @@ const Navbar = () => {
             <div className="container">
                 <Link className="navbar-brand" to={isAuthenticated ? "/dashboard" : "/"} onClick={handleNavClick}>
                     <Build sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    <span>SogeFix</span>
+                    <span>Sogerec</span>
                 </Link>
 
                 {/* Mobile notification icon */}
