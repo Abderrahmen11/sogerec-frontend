@@ -17,6 +17,7 @@ import useAuth from '../../hooks/useAuth';
 import useTickets from '../../hooks/useTickets';
 import useInterventions from '../../hooks/useInterventions';
 import userService from '../../services/userService';
+import AnimatedNumber from '../common/AnimatedNumber';
 import './DashboardStyles.css';
 
 // Register ChartJS components
@@ -123,21 +124,27 @@ const DashboardAdmin = () => {
                         <div className="col-lg-4 col-md-6 col-12">
                             <div className="custom-block bg-primary text-white shadow-lg p-4 h-100 text-center border-0">
                                 <h5 className="mb-2 opacity-75">Total Clients</h5>
-                                <p className="display-6 fw-bold mb-0">{stats?.stats?.usersCount || 0}</p>
+                                <p className="display-6 fw-bold mb-0">
+                                    <AnimatedNumber value={stats?.stats?.usersCount || 0} />
+                                </p>
                                 <span className="small opacity-50">Active in system</span>
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6 col-12">
                             <div className="custom-block bg-success text-white shadow-lg p-4 h-100 text-center border-0">
                                 <h5 className="mb-2 opacity-75">Technicians</h5>
-                                <p className="display-6 fw-bold mb-0">{stats?.stats?.techniciansCount || 0}</p>
+                                <p className="display-6 fw-bold mb-0">
+                                    <AnimatedNumber value={stats?.stats?.techniciansCount || 0} />
+                                </p>
                                 <span className="small opacity-50">Operational staff</span>
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6 col-12">
                             <div className="custom-block bg-warning text-dark shadow-lg p-4 h-100 text-center border-0">
                                 <h5 className="mb-2 opacity-75">Open Requests</h5>
-                                <p className="display-6 fw-bold mb-0">{stats?.stats?.openTicketsCount || 0}</p>
+                                <p className="display-6 fw-bold mb-0">
+                                    <AnimatedNumber value={stats?.stats?.openTicketsCount || 0} />
+                                </p>
                                 <span className="small opacity-50">Requiring attention</span>
                             </div>
                         </div>
@@ -178,7 +185,7 @@ const DashboardAdmin = () => {
                                             <li key={index} className="list-group-item border-0 ps-0 py-3">
                                                 <div className="d-flex">
                                                     <span className="me-3 text-primary">●</span>
-                                                    <span className="text-muted small">{note}</span>
+                                                    <span className="text-muted small" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{note}</span>
                                                 </div>
                                             </li>
                                         ))
@@ -193,8 +200,8 @@ const DashboardAdmin = () => {
                         <div className="col-12">
                             <div className="custom-block bg-white shadow-lg p-4 border-0">
                                 <h5 className="mb-4 fw-bold">Recent Interventions</h5>
-                                <div className="table-responsive">
-                                    <table className="table table-hover align-middle">
+                                <div className="table-responsive" style={{ overflowX: 'auto', overflowY: 'visible' }}>
+                                    <table className="table table-hover align-middle mb-0">
                                         <thead className="table-light">
                                             <tr>
                                                 <th className="border-0">ID</th>
@@ -206,7 +213,7 @@ const DashboardAdmin = () => {
                                         </thead>
                                         <tbody>
                                             {interventions && interventions.length > 0 ? (
-                                                interventions.slice(0, 5).map(intervention => (
+                                                interventions.slice(0, 10).map(intervention => (
                                                     <tr key={intervention.id}>
                                                         <td className="fw-bold">#{intervention.id}</td>
                                                         <td>
@@ -217,7 +224,9 @@ const DashboardAdmin = () => {
                                                             </span>
                                                         </td>
                                                         <td className="text-muted">{intervention.user?.name || 'N/A'}</td>
-                                                        <td className="text-truncate" style={{ maxWidth: '200px' }}>{intervention.ticket?.title || 'N/A'}</td>
+                                                        <td style={{ minWidth: '200px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                                                            {intervention.ticket?.title || 'N/A'}
+                                                        </td>
                                                         <td className="text-end text-muted small">{intervention.scheduled_at ? new Date(intervention.scheduled_at).toLocaleDateString() : '-'}</td>
                                                     </tr>
                                                 ))

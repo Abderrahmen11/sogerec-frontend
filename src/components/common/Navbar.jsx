@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Build, Notifications, Person, Settings, KeyboardArrowDown, Logout } from '@mui/icons-material';
+import { Build, Notifications, Person, Settings, KeyboardArrowDown, Logout, Menu, Close } from '@mui/icons-material';
 import useAuth from '../../hooks/useAuth';
 import useNotifications from '../../hooks/useNotifications';
 import useRoleAccess from '../../hooks/useRoleAccess';
@@ -73,7 +73,7 @@ const Navbar = () => {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <nav className={`navbar navbar-expand-lg ${isSticky ? 'navbar-sticky' : ''} ${isTransparentPage ? 'navbar-dashboard' : ''}`}>
+        <nav className={`navbar navbar-expand-lg ${isSticky ? 'navbar-sticky' : ''} ${isTransparentPage ? 'navbar-dashboard' : ''} ${navbarExpanded ? 'navbar-expanded' : ''}`}>
             <div className="container">
                 <Link className="navbar-brand" to={isAuthenticated ? "/dashboard" : "/"} onClick={handleNavClick}>
                     <Build sx={{ mr: 1, verticalAlign: 'middle' }} />
@@ -83,7 +83,7 @@ const Navbar = () => {
                 {/* Mobile notification icon */}
                 <div className="d-lg-none ms-auto me-4">
                     {isAuthenticated && (
-                        <Link to="/notifications" className="navbar-icon position-relative" onClick={handleNavClick}>
+                        <Link to="/notifications" className="navbar-icon position-relative" onClick={() => { markAllAsRead(); handleNavClick(); }}>
                             <Notifications />
                             {unreadCount > 0 && (
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -104,7 +104,7 @@ const Navbar = () => {
                     aria-label="Toggle navigation"
                     onClick={() => setNavbarExpanded(!navbarExpanded)}
                 >
-                    <span className="navbar-toggler-icon"></span>
+                    {navbarExpanded ? <Close /> : <Menu />}
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
@@ -207,7 +207,7 @@ const Navbar = () => {
                             </ul>
 
                             <div className="d-none d-lg-block">
-                                <Link to="/notifications" className="navbar-icon position-relative me-3" onClick={handleNavClick}>
+                                <Link to="/notifications" className="navbar-icon position-relative me-3" onClick={() => { markAllAsRead(); handleNavClick(); }}>
                                     <Notifications />
                                     {unreadCount > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

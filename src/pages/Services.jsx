@@ -35,7 +35,7 @@ const Services = () => {
                                         </div>
                                         <p className="mb-0">From inspections to urgent repairs, our team ensures all electrical systems are safe and fully operational.</p>
                                         <div className="mt-auto">
-                                            <Link to="/service-details" className="btn custom-btn mt-3">Learn More</Link>
+                                            <Link to="/services/electrical-maintenance" className="btn custom-btn mt-3">Learn More</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@ const Services = () => {
                                         </div>
                                         <p className="mb-0">We handle installation of industrial equipment with precision, ensuring safety and compliance standards.</p>
                                         <div className="mt-auto">
-                                            <Link to="/service-details" className="btn custom-btn mt-3">Learn More</Link>
+                                            <Link to="/services/equipment-installation" className="btn custom-btn mt-3">Learn More</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -69,7 +69,7 @@ const Services = () => {
                                         </div>
                                         <p className="mb-0">Our technicians provide troubleshooting, system maintenance, and IT support for smooth daily operations.</p>
                                         <div className="mt-auto">
-                                            <Link to="/service-details" className="btn custom-btn mt-3">Learn More</Link>
+                                            <Link to="/services/it-network-support" className="btn custom-btn mt-3">Learn More</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@ const Services = () => {
                         {/* Service 4 */}
                         <div className="col-lg-6 col-md-6 col-12 mt-3 mb-4 mb-lg-0">
                             <div className="custom-block bg-white shadow-lg">
-                                <Link to="/service-details">
+                                <Link to="/services/preventive-maintenance">
                                     <div className="d-flex align-items-center">
                                         <div>
                                             <h5 className="mb-2">Preventive Maintenance</h5>
@@ -141,7 +141,7 @@ const Services = () => {
                                         </div>
                                         <p className="text-white">Our technicians are available for urgent calls to minimize downtime and ensure quick problem resolution.</p>
                                         <div className="mt-auto">
-                                            <Link to="/service-details" className="btn custom-btn mt-2">Learn More</Link>
+                                            <Link to="/services/emergency-interventions" className="btn custom-btn mt-2">Learn More</Link>
                                         </div>
                                     </div>
                                     <div className="social-share d-flex">

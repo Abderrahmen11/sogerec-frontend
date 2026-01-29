@@ -17,6 +17,7 @@ import useInterventions from '../../hooks/useInterventions';
 import useSmoothScroll from '../../hooks/useSmoothScroll';
 import useNavbarCollapse from '../../hooks/useNavbarCollapse';
 import Timeline from '../timeline/Timeline';
+import AnimatedNumber from '../common/AnimatedNumber';
 import './DashboardStyles.css';
 import '../../styles/Accordion.css';
 
@@ -131,7 +132,9 @@ const DashboardClient = () => {
                                             <h5 className="mb-2">My Requests</h5>
                                             <p className="mb-0">View and manage all your maintenance requests.</p>
                                         </div>
-                                        <span className="badge bg-primary rounded-pill ms-auto">{openTicketsCount}</span>
+                                        <span className="badge bg-primary rounded-pill ms-auto">
+                                            <AnimatedNumber value={openTicketsCount} />
+                                        </span>
                                     </div>
                                     <img src="/images/topics/undraw_Finance_re_gnv2.png" className="custom-block-image img-fluid" alt="Tickets" />
                                 </Link>
@@ -149,7 +152,9 @@ const DashboardClient = () => {
                                             <p className="text-white">Track the progress of your scheduled interventions.</p>
                                             <Link to="/interventions" className="btn custom-btn mt-2 mt-lg-3">View Interventions</Link>
                                         </div>
-                                        <span className="badge bg-success rounded-pill ms-auto">{interventionsCount}</span>
+                                        <span className="badge bg-success rounded-pill ms-auto">
+                                            <AnimatedNumber value={interventionsCount} />
+                                        </span>
                                     </div>
                                     <div className="section-overlay"></div>
                                 </div>

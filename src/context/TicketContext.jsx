@@ -55,21 +55,21 @@ export function TicketProvider({ children }) {
 
     }, [tickets]);
 
-    const updateTicket = useCallback(async (id, ticketData) => {
+    const cancelTicket = useCallback(async (id, reason) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await ticketService.update(id, ticketData);
+            // We'll use the updateStatus endpoint but also pass the reason
+            const data = await ticketService.update(id, { status: 'closed', cancellation_reason: reason });
             setTickets(tickets.map(t => t.id === id ? data.data || data : t));
             if (selectedTicket?.id === id) setSelectedTicket(data.data || data);
             return data;
         } catch (err) {
-            setError(err.message || 'Failed to update ticket');
+            setError(err.message || 'Failed to cancel ticket');
             throw err;
         } finally {
             setLoading(false);
         }
-
     }, [tickets, selectedTicket]);
 
     const value = {
@@ -81,6 +81,7 @@ export function TicketProvider({ children }) {
         fetchTicketById,
         createTicket,
         updateTicket,
+        cancelTicket,
     };
 
     return <TicketContext.Provider value={value}>{children}</TicketContext.Provider>;

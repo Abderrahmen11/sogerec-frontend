@@ -1,0 +1,23 @@
+.ticket-table-compact td,
+.ticket-table-compact th {
+    padding: 0.75rem 1rem !important;
+    vertical-align: middle;
+}
+
+.ticket-status-badge {
+    text-transform: capitalize;
+    font-weight: 500;
+    padding: 0.4em 0.8em;
+}
+
+.ticket-title-cell {
+    max-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.btn-cancel-ticket {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+}

@@ -40,7 +40,7 @@ const AppRouter = () => (
                 <Route path="/register" element={<Register />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/services" element={<Services />} />
-                <Route path="/service-details" element={<ServiceDetails />} />
+                <Route path="/services/:slug" element={<ServiceDetails />} />
                 <Route path="/get-started" element={<GetStarted />} />
 
                 {/* Private routes */}
