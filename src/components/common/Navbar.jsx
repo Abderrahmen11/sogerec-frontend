@@ -12,14 +12,15 @@ const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { user, logout, isAuthenticated } = useAuth();
-    const { unreadCount } = useNotifications();
+    const { unreadCount, markAllAsRead } = useNotifications();
     const { isAdmin, isTechnician } = useRoleAccess();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [navbarExpanded, setNavbarExpanded] = useState(false);
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const dropdownRef = useRef(null);
     const isSticky = useStickyNavbar(50);
-    const isTransparentPage = location.pathname.includes('/dashboard') || location.pathname.includes('/services');
+    const isDashboardPage = location.pathname.includes('/dashboard');
+    const isTransparentState = isDashboardPage && !isSticky && !navbarExpanded;
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -60,20 +61,13 @@ const Navbar = () => {
     const handleNavClick = () => {
         setDropdownOpen(false);
         // Close mobile navbar when clicking a link
-        const navbarCollapse = document.getElementById('navbarNav');
-        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-            const bsCollapse = window.bootstrap?.Collapse?.getInstance(navbarCollapse);
-            if (bsCollapse) {
-                bsCollapse.hide();
-            }
-            setNavbarExpanded(false);
-        }
+        setNavbarExpanded(false);
     };
 
     const isActive = (path) => location.pathname === path;
 
     return (
-        <nav className={`navbar navbar-expand-lg ${isSticky ? 'navbar-sticky' : ''} ${isTransparentPage ? 'navbar-dashboard' : ''} ${navbarExpanded ? 'navbar-expanded' : ''}`}>
+        <nav className={`navbar navbar-expand-lg ${isSticky ? 'navbar-sticky' : ''} ${isTransparentState ? 'navbar-transparent' : 'navbar-solid'} ${navbarExpanded ? 'navbar-expanded' : ''}`}>
             <div className="container">
                 <Link className="navbar-brand" to={isAuthenticated ? "/dashboard" : "/"} onClick={handleNavClick}>
                     <Build sx={{ mr: 1, verticalAlign: 'middle' }} />
@@ -97,8 +91,6 @@ const Navbar = () => {
                 <button
                     className="navbar-toggler"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
                     aria-controls="navbarNav"
                     aria-expanded={navbarExpanded}
                     aria-label="Toggle navigation"
@@ -107,7 +99,7 @@ const Navbar = () => {
                     {navbarExpanded ? <Close /> : <Menu />}
                 </button>
 
-                <div className="collapse navbar-collapse" id="navbarNav">
+                <div className={`collapse navbar-collapse ${navbarExpanded ? 'show' : ''}`} id="navbarNav">
                     {isAuthenticated ? (
                         <>
                             <ul className="navbar-nav ms-lg-5 me-lg-auto">

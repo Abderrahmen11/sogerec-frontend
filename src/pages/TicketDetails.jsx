@@ -40,9 +40,23 @@ const TicketDetails = () => {
         }
     };
 
-    if (loading) return <div className="container mt-5 text-center"><div className="spinner-border text-primary" role="status"></div></div>;
-    if (error) return <div className="container mt-5"><div className="alert alert-danger">{error}</div></div>;
-    if (!selectedTicket) return <div className="container mt-5"><div className="alert alert-warning">Ticket not found</div></div>;
+    if (loading) return (
+        <main className="container mt-5 pt-5 text-center">
+            <div className="spinner-border text-primary" role="status"></div>
+        </main>
+    );
+
+    if (error) return (
+        <main className="container mt-5 pt-5">
+            <div className="alert alert-danger">{error}</div>
+        </main>
+    );
+
+    if (!selectedTicket) return (
+        <main className="container mt-5 pt-5">
+            <div className="alert alert-warning">Ticket not found</div>
+        </main>
+    );
 
     const isAdmin = user?.role === 'admin';
 

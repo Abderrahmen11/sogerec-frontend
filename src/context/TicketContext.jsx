@@ -55,6 +55,23 @@ export function TicketProvider({ children }) {
 
     }, [tickets]);
 
+    const updateTicket = useCallback(async (id, ticketData) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await ticketService.update(id, ticketData);
+            setTickets(tickets.map(t => t.id === id ? data.data || data : t));
+            if (selectedTicket?.id === id) setSelectedTicket(data.data || data);
+            return data;
+        } catch (err) {
+            setError(err.message || 'Failed to update ticket');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+
+    }, [tickets, selectedTicket]);
+
     const cancelTicket = useCallback(async (id, reason) => {
         setLoading(true);
         setError(null);

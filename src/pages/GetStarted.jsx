@@ -46,7 +46,7 @@ const GetStarted = () => {
                     <div className="row align-items-center">
                         <div className="col-lg-8 col-12 text-center">
                             <h2 style={{ color: '#fff', marginBottom: '1.5rem' }}>Welcome to SogeRec</h2>
-                            <p style={{ color: '#f0f0f0' }}>Choose your role to get started</p>
+                            <p style={{ color: '#f0f0f0' }}>Comprehensive facility management solutions for modern businesses.</p>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ const GetStarted = () => {
                             <div className="carousel-caption d-none d-md-block" style={{ background: 'rgba(0,0,0,0.5)', borderRadius: '12px', padding: '20px' }}>
                                 <h2 style={{ color: '#fff' }}>Expert Technical Team</h2>
                                 <p style={{ color: '#f0f0f0' }}>Our certified technicians deliver reliable solutions for all your maintenance needs.</p>
-                                <a href="#roles" className="btn" style={{ backgroundColor: '#004598', color: '#fff', border: 'none' }}>Meet the Team</a>
+                                <a href="#features" className="btn" style={{ backgroundColor: '#004598', color: '#fff', border: 'none' }}>Learn More</a>
                             </div>
                         </div>
 
@@ -98,62 +98,7 @@ const GetStarted = () => {
                 </div>
             </header>
 
-            <section className="section-padding" style={{ padding: '60px 0', backgroundColor: '#f8f9fa' }} id="roles">
-                <div className="container">
-                    <div className="row justify-content-center">
-                        {/* Client */}
-                        <div className="col-lg-4 col-md-6 col-12 mb-4">
-                            <div className="custom-block shadow-lg text-center p-4 h-100" style={{ backgroundColor: '#fff', borderRadius: '12px' }}>
-                                <div className="role-icon mb-3" style={{ fontSize: '3rem', color: '#1299dd' }}>
-                                    <Person sx={{ fontSize: '3rem' }} />
-                                </div>
-                                <h4 style={{ color: '#3a4856' }}>Client</h4>
-                                <p style={{ color: '#717275' }}>Submit maintenance requests, track progress of interventions, and manage your service history.</p>
-                                <ul className="list-unstyled mt-3 mb-4 text-start">
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#1299dd' }} /> Submit service requests</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#1299dd' }} /> Track intervention status</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#1299dd' }} /> View service history</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#1299dd' }} /> Communicate with technicians</li>
-                                </ul>
-                            </div>
-                        </div>
 
-                        {/* Administrator */}
-                        <div className="col-lg-4 col-md-6 col-12 mb-4">
-                            <div className="custom-block shadow-lg text-center p-4 h-100" style={{ backgroundColor: '#fff', borderRadius: '12px' }}>
-                                <div className="role-icon mb-3" style={{ fontSize: '3rem', color: '#0073b3' }}>
-                                    <Shield sx={{ fontSize: '3rem' }} />
-                                </div>
-                                <h4 style={{ color: '#3a4856' }}>Administrator</h4>
-                                <p style={{ color: '#717275' }}>Manage users, assign technicians, monitor service progress, and generate reports.</p>
-                                <ul className="list-unstyled mt-3 mb-4 text-start">
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#0073b3' }} /> User management</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#0073b3' }} /> Assign interventions</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#0073b3' }} /> Monitor service progress</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#0073b3' }} /> Generate reports</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        {/* Technician */}
-                        <div className="col-lg-4 col-md-6 col-12 mb-4">
-                            <div className="custom-block shadow-lg text-center p-4 h-100" style={{ backgroundColor: '#fff', borderRadius: '12px' }}>
-                                <div className="role-icon mb-3" style={{ fontSize: '3rem', color: '#00a6ff' }}>
-                                    <Build sx={{ fontSize: '3rem' }} />
-                                </div>
-                                <h4 style={{ color: '#3a4856' }}>Technician</h4>
-                                <p style={{ color: '#717275' }}>View assigned tasks, update intervention progress, and manage your work schedule.</p>
-                                <ul className="list-unstyled mt-3 mb-4 text-start">
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#00a6ff' }} /> View assigned tasks</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#00a6ff' }} /> Update intervention status</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#00a6ff' }} /> Manage schedule</li>
-                                    <li className="mb-2" style={{ color: '#717275' }}><CheckCircle sx={{ mr: 1, verticalAlign: 'middle', fontSize: 18, color: '#00a6ff' }} /> Document work completed</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <section className="explore-section section-padding section-bg" id="features">
                 <div className="container">

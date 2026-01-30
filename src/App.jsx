@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/variables.css';
 import './styles/global.css';
 import './styles/bootstrap-overrides.css';
+import './styles/MobileTables.css';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';

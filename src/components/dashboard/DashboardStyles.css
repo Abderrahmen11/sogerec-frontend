@@ -5,12 +5,14 @@
 :root {
     --white-color: #fff;
     --primary-color: #1299dd;
-    --secondary-color: #0073b3;
-    --section-bg-color: var(--primary-color);
-    --custom-btn-bg-color: #004598;
-    --custom-btn-bg-hover-color: #00a6ff;
+    --secondary-color: #3a4856;
+    --section-bg-color: #f0f8ff;
+    --custom-btn-bg-color: #1299dd;
+    --custom-btn-bg-hover-color: #0073b3;
     --dark-color: #3a4856;
     --p-color: #717275;
+    --footer-text: rgba(255, 255, 255, 0.7);
+    --footer-title-color: #ffffff;
     --border-color: #7fffd4;
     --link-hover-color: #5441b0;
 
@@ -562,6 +564,14 @@ strong {
     width: 30px;
     height: 30px;
     line-height: 20px;
+}
+
+/* Fix for status badges being truncated */
+.custom-block .badge.rounded-pill {
+    width: auto;
+    height: auto;
+    display: inline-block;
+    border-radius: 50rem !important;
 }
 
 .custom-block-overlay {

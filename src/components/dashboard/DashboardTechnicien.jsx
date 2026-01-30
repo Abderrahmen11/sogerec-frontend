@@ -1,4 +1,3 @@
-```javascript
 import React, { useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import AnimatedNumber from '../common/AnimatedNumber';
@@ -33,7 +32,7 @@ const DashboardTechnicien = () => {
         <div id="technician-dashboard">
             <header className="hero-section d-flex justify-content-center align-items-center" id="home"
                 style={{
-                    background: `linear - gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/tech.jpg') center / cover no - repeat`,
+                    background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/tech.jpg') center/cover no-repeat`,
                     minHeight: '300px'
                 }}>
                 <div className="container text-center">
@@ -42,7 +41,6 @@ const DashboardTechnicien = () => {
                 </div>
             </header>
 
-            {/* TECHNICIAN STATS */}
             <section className="section-padding">
                 <div className="container">
                     <div className="stats-block shadow-lg" style={{ background: 'linear-gradient(120deg, #0d6efd 60%, #198754 100%)', color: '#fff', borderRadius: '16px', padding: '24px 0', marginBottom: '24px' }}>
@@ -78,8 +76,8 @@ const DashboardTechnicien = () => {
                         <div className="col-12">
                             <div className="custom-block bg-white shadow-lg p-4 border-0">
                                 <h5 className="mb-4 fw-bold">Recent Interventions</h5>
-                                <div className="table-responsive" style={{ overflowX: 'auto', overflowY: 'visible' }}>
-                                    <table className="table table-hover align-middle mb-0">
+                                <div className="table-responsive">
+                                    <table className="table table-hover align-middle mb-0 mobile-responsive-table">
                                         <thead className="table-light">
                                             <tr>
                                                 <th className="border-0">ID</th>
@@ -91,19 +89,19 @@ const DashboardTechnicien = () => {
                                         </thead>
                                         <tbody>
                                             {myInterventions.length > 0 ? (
-                                                myInterventions.slice(0,10).map(intervention => (
+                                                myInterventions.slice(0, 10).map(intervention => (
                                                     <tr key={intervention.id}>
-                                                        <td className="fw-bold">#{intervention.id}</td>
-                                                        <td>
-                                                            <span className={`badge px - 3 rounded - pill bg - ${ intervention.status === 'completed' ? 'success' : intervention.status === 'in_progress' ? 'warning' : 'primary' } `}>
+                                                        <td data-label="ID" className="fw-bold">#{intervention.id}</td>
+                                                        <td data-label="Status">
+                                                            <span className={`badge px-3 rounded-pill bg-${intervention.status === 'completed' ? 'success' : intervention.status === 'in_progress' ? 'warning' : 'primary'}`} style={{ textTransform: 'capitalize' }}>
                                                                 {intervention.status?.replace('_', ' ')}
                                                             </span>
                                                         </td>
-                                                        <td className="text-muted">{intervention.ticket?.user?.name || 'N/A'}</td>
-                                                        <td style={{ minWidth: '200px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                                                        <td data-label="Client" className="text-muted">{intervention.ticket?.user?.name || 'N/A'}</td>
+                                                        <td data-label="Ticket" style={{ minWidth: '200px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
                                                             {intervention.ticket?.title || 'N/A'}
                                                         </td>
-                                                        <td className="text-end text-muted small">{intervention.scheduled_at ? new Date(intervention.scheduled_at).toLocaleDateString() : '-'}</td>
+                                                        <td data-label="Date" className="text-end text-muted small">{intervention.scheduled_at ? new Date(intervention.scheduled_at).toLocaleDateString() : '-'}</td>
                                                     </tr>
                                                 ))
                                             ) : (
@@ -122,7 +120,7 @@ const DashboardTechnicien = () => {
                                 <div key={intervention.id} className="col-lg-4 col-md-6 col-12 mb-4">
                                     <div className="custom-block bg-white shadow-lg dashboard-card h-100">
                                         <div className="d-flex justify-content-between align-items-center mb-3">
-                                            <span className={`badge bg - ${ intervention.status === 'completed' ? 'success' : intervention.status === 'in_progress' ? 'warning' : 'primary' } ticket - status - badge`}>
+                                            <span className={`badge bg-${intervention.status === 'completed' ? 'success' : intervention.status === 'in_progress' ? 'warning' : 'primary'} ticket-status-badge`} style={{ textTransform: 'capitalize' }}>
                                                 {intervention.status?.replace('_', ' ')}
                                             </span>
                                             <span className="text-muted small">#{intervention.id}</span>

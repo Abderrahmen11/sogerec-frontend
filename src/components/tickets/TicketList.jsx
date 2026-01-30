@@ -28,7 +28,7 @@ const TicketList = ({ tickets = [] }) => {
             <div className="col-12">
                 <div className="card border-0 shadow-sm">
                     <div className="table-responsive">
-                        <table className="table table-hover ticket-table-compact mb-0">
+                        <table className="table table-hover ticket-table-compact mb-0 mobile-responsive-table">
                             <thead className="table-light">
                                 <tr>
                                     <th>ID</th>
@@ -43,27 +43,27 @@ const TicketList = ({ tickets = [] }) => {
                                 {tickets.length > 0 ? (
                                     tickets.map(ticket => (
                                         <tr key={ticket.id}>
-                                            <td className="fw-bold">#{ticket.id}</td>
-                                            <td className="ticket-title-cell">{ticket.title}</td>
-                                            <td>
+                                            <td data-label="ID" className="fw-bold">#{ticket.id}</td>
+                                            <td data-label="Title" className="ticket-title-cell">{ticket.title}</td>
+                                            <td data-label="Status">
                                                 <span className={`badge ticket-status-badge bg-${ticket.status === 'open' ? 'info' :
-                                                        ticket.status === 'in_progress' ? 'warning' :
-                                                            ticket.status === 'closed' ? 'secondary' : 'danger'
-                                                    }`}>
-                                                    {ticket.status}
+                                                    ticket.status === 'in_progress' ? 'warning' :
+                                                        ticket.status === 'closed' ? 'secondary' : 'danger'
+                                                    }`} style={{ textTransform: 'capitalize' }}>
+                                                    {ticket.status?.replace('_', ' ')}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Priority">
                                                 <span className={`badge bg-${ticket.priority === 'urgent' ? 'danger' :
-                                                        ticket.priority === 'high' ? 'warning' : 'primary'
+                                                    ticket.priority === 'high' ? 'warning' : 'primary'
                                                     }`}>
                                                     {ticket.priority}
                                                 </span>
                                             </td>
-                                            <td className="text-muted small">
+                                            <td data-label="Date" className="text-muted small">
                                                 {new Date(ticket.created_at).toLocaleDateString()}
                                             </td>
-                                            <td className="text-end">
+                                            <td data-label="Actions" className="text-end">
                                                 {ticket.status !== 'closed' && (
                                                     <button
                                                         className="btn btn-outline-danger btn-sm btn-cancel-ticket"

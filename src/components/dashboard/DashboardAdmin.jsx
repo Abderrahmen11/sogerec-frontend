@@ -200,8 +200,8 @@ const DashboardAdmin = () => {
                         <div className="col-12">
                             <div className="custom-block bg-white shadow-lg p-4 border-0">
                                 <h5 className="mb-4 fw-bold">Recent Interventions</h5>
-                                <div className="table-responsive" style={{ overflowX: 'auto', overflowY: 'visible' }}>
-                                    <table className="table table-hover align-middle mb-0">
+                                <div className="table-responsive">
+                                    <table className="table table-hover align-middle mb-0 mobile-responsive-table">
                                         <thead className="table-light">
                                             <tr>
                                                 <th className="border-0">ID</th>
@@ -215,19 +215,19 @@ const DashboardAdmin = () => {
                                             {interventions && interventions.length > 0 ? (
                                                 interventions.slice(0, 10).map(intervention => (
                                                     <tr key={intervention.id}>
-                                                        <td className="fw-bold">#{intervention.id}</td>
-                                                        <td>
+                                                        <td data-label="ID" className="fw-bold">#{intervention.id}</td>
+                                                        <td data-label="Status">
                                                             <span className={`badge px-3 rounded-pill bg-${intervention.status === 'completed' ? 'success' :
                                                                 intervention.status === 'in_progress' ? 'warning' : 'primary'
-                                                                }`}>
+                                                                }`} style={{ textTransform: 'capitalize' }}>
                                                                 {intervention.status?.replace('_', ' ')}
                                                             </span>
                                                         </td>
-                                                        <td className="text-muted">{intervention.user?.name || 'N/A'}</td>
-                                                        <td style={{ minWidth: '200px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                                                        <td data-label="Technician" className="text-muted">{intervention.user?.name || 'N/A'}</td>
+                                                        <td data-label="Ticket" style={{ minWidth: '200px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
                                                             {intervention.ticket?.title || 'N/A'}
                                                         </td>
-                                                        <td className="text-end text-muted small">{intervention.scheduled_at ? new Date(intervention.scheduled_at).toLocaleDateString() : '-'}</td>
+                                                        <td data-label="Scheduled" className="text-end text-muted small">{intervention.scheduled_at ? new Date(intervention.scheduled_at).toLocaleDateString() : '-'}</td>
                                                     </tr>
                                                 ))
                                             ) : (

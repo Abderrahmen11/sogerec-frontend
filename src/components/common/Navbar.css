@@ -1,30 +1,32 @@
 /* Navbar styling matching native template */
 .navbar {
-    background: var(--secondary-color);
-    /* Default visible background */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 0;
+    transition: all 0.3s ease;
     z-index: 999;
-    padding: 1rem 0;
-    transition: all 0.5s ease;
-    position: fixed;
-    top: 0;
-    width: 100%;
 }
 
-/* Visibility rules for Dashboard pages */
-.navbar.navbar-dashboard {
-    background: transparent;
+.navbar-sticky {
+    padding: 10px 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.navbar.navbar-dashboard.navbar-sticky,
-.navbar.navbar-dashboard.navbar-expanded {
-    background-color: var(--secondary-color);
+/* Base states */
+.navbar-solid {
+    background-color: var(--secondary-color) !important;
 }
 
-.navbar.navbar-sticky {
-    background-color: var(--secondary-color);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    padding: 0.5rem 0;
+.navbar-transparent {
+    background-color: transparent !important;
+}
+
+/* Force solid when sticky even if transparent page */
+.navbar-sticky.navbar-transparent {
+    background-color: var(--secondary-color) !important;
+}
+
+/* Mobile Expanded Force Background */
+.navbar-expanded {
+    background-color: var(--secondary-color) !important;
 }
 
 .navbar-brand,
@@ -196,20 +198,21 @@
 /* Mobile responsive */
 @media (max-width: 991px) {
     .navbar {
-        background-color: rgba(58, 72, 86, 1);
-        transition: background-color 0.3s ease;
+        background-color: var(--secondary-color) !important;
     }
 
     .navbar.navbar-expanded {
-        background-color: var(--secondary-color) !important;
-        height: 100vh;
+        height: auto;
+        min-height: 100vh;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
     }
 
-    /* Prevent content hiding under navbar when expanded */
-    .navbar.navbar-expanded + * {
-        margin-top: 100vh;
-        transition: margin-top 0.3s ease;
+    .navbar-collapse.show {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .navbar-nav {
@@ -218,35 +221,14 @@
         padding-top: 1rem;
     }
 
-    .navbar-nav .nav-link {
-        padding: 10px 0;
-        color: var(--nav-text) !important;
+    /* Global content push on mobile */
+    main {
+        margin-top: 80px;
+        /* Base header height */
     }
 
-    .navbar .dropdown-menu {
-        position: static;
-        opacity: 1;
-        pointer-events: auto;
-        margin-top: 10px;
-        box-shadow: none;
-        background: rgba(255, 255, 255, 0.1);
+    .navbar.navbar-expanded+main {
         display: none;
-    }
-
-    .navbar .dropdown-menu.show {
-        display: block;
-    }
-
-    .navbar .dropdown-menu::before {
-        display: none;
-    }
-
-    .navbar-expand-lg .navbar-nav .nav-link {
-        margin: 5px 0;
-        padding: 8px 0;
-    }
-
-    .navbar-icon {
-        margin: 0 5px;
+        /* Hide content when menu is full screen to focus on navigation */
     }
 }

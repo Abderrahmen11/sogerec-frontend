@@ -1,0 +1,114 @@
+/* Mobile Responsive Table System */
+
+/* Default Desktop Styles (Unchanged) */
+.mobile-responsive-table {
+    width: 100%;
+    margin-bottom: 1rem;
+    vertical-align: middle;
+    border-color: #dee2e6;
+}
+
+/* Mobile Styles (< 768px) */
+@media screen and (max-width: 768px) {
+
+    /* Force table to behave like block elements */
+    .mobile-responsive-table,
+    .mobile-responsive-table thead,
+    .mobile-responsive-table tbody,
+    .mobile-responsive-table th,
+    .mobile-responsive-table td,
+    .mobile-responsive-table tr {
+        display: block;
+    }
+
+    /* Hide table headers (but keep for accessibility/SEO if needed, though display:none removes them) */
+    .mobile-responsive-table thead {
+        display: none;
+    }
+
+    /* Row as a Card */
+    .mobile-responsive-table tbody tr {
+        margin-bottom: 1.5rem;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        padding: 1rem;
+        transition: transform 0.2s ease;
+    }
+
+    /* Cell Styles */
+    .mobile-responsive-table td {
+        /* Flex for label/value alignment */
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        /* Align top for long text */
+
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+        position: relative;
+        padding: 0.75rem 0;
+
+        /* Text handling */
+        text-align: right;
+        /* Value align right */
+        white-space: normal !important;
+        word-break: break-word;
+        min-height: auto;
+        /* grow naturally */
+    }
+
+    .mobile-responsive-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* The 'Label' using data-label attribute */
+    .mobile-responsive-table td::before {
+        content: attr(data-label);
+
+        /* Label styles */
+        float: left;
+        /* Fallback */
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: #6c757d;
+        margin-right: 1rem;
+        text-align: left;
+        flex-shrink: 0;
+        /* Don't shrink label */
+        max-width: 40%;
+        /* Prevent label from taking too much space */
+    }
+
+    /* Special handling for Action buttons to be full width or centered if desired, 
+       but for now we keep flex behavior. Can override if specific "Actions" needs distinct look */
+    .mobile-responsive-table td[data-label="Actions"],
+    .mobile-responsive-table td[data-label="Action"] {
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .mobile-responsive-table td[data-label="Actions"]::before,
+    .mobile-responsive-table td[data-label="Action"]::before {
+        display: none;
+        /* Hide "Actions" label if obvious */
+    }
+
+    /* Remove Fixed Heights or Overflows from Parent Wrappers */
+    .table-responsive {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    /* Fix badge alignment in flex container */
+    .mobile-responsive-table td .badge {
+        display: inline-block;
+        white-space: normal;
+        text-align: center;
+    }
+}

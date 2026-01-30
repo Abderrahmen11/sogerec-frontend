@@ -69,29 +69,29 @@ const InterventionDetails = () => {
     };
 
     if (loading) return (
-        <div className="container mt-5 text-center">
+        <main className="container mt-5 pt-5 text-center">
             <div className="spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
             </div>
-        </div>
+        </main>
     );
 
     if (error) return (
-        <div className="container mt-5">
+        <main className="container mt-5 pt-5">
             <div className="alert alert-danger">{error}</div>
             <div className="text-center">
                 <Link to="/interventions" className="btn btn-primary">Back to Interventions</Link>
             </div>
-        </div>
+        </main>
     );
 
     if (!selectedIntervention) return (
-        <div className="container mt-5">
+        <main className="container mt-5 pt-5">
             <div className="alert alert-warning">Intervention not found</div>
             <div className="text-center">
                 <Link to="/interventions" className="btn btn-primary">Back to Interventions</Link>
             </div>
-        </div>
+        </main>
     );
 
     const isAssignedTechnician = user?.id === selectedIntervention.user_id;

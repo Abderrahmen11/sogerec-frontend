@@ -116,7 +116,7 @@ const Tickets = () => {
                                 <p className="mt-3 text-muted">Loading tickets...</p>
                             </div>
                         ) : filteredTickets.length > 0 ? (
-                            <table className="table table-hover align-middle mb-0" style={{ borderColor: '#7fffd4' }}>
+                            <table className="table table-hover align-middle mb-0 mobile-responsive-table" style={{ borderColor: '#7fffd4' }}>
                                 <thead style={{ backgroundColor: 'rgba(18, 153, 221, 0.05)', borderBottom: '2px solid #7fffd4' }}>
                                     <tr>
                                         <th style={{ color: '#3a4856', fontWeight: '600' }}>#</th>
@@ -130,22 +130,22 @@ const Tickets = () => {
                                 </thead>
                                 <tbody>
                                     {filteredTickets.map((ticket, index) => (
-                                        <tr key={ticket.id} style={{ borderBottom: '1px solid #e9ecef' }}>
-                                            <td style={{ color: '#3a4856', fontWeight: '600' }}>{index + 1}</td>
-                                            <td style={{ color: '#3a4856', maxWidth: '300px' }}>{ticket.title}</td>
-                                            <td>
+                                        <tr key={ticket.id}>
+                                            <td data-label="#" style={{ color: '#3a4856', fontWeight: '600' }}>{index + 1}</td>
+                                            <td data-label="Subject" style={{ color: '#3a4856', maxWidth: '300px' }}>{ticket.title}</td>
+                                            <td data-label="Status">
                                                 <span className="badge text-white px-3 py-2" style={{ backgroundColor: getStatusBadgeColor(ticket.status), fontSize: '0.85rem', fontWeight: '600', textTransform: 'capitalize' }}>
                                                     {ticket.status?.replace('_', ' ')}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Priority">
                                                 <span className="badge text-white px-3 py-2" style={{ backgroundColor: getPriorityBadgeColor(ticket.priority), fontSize: '0.85rem', fontWeight: '600', textTransform: 'capitalize' }}>
                                                     {ticket.priority}
                                                 </span>
                                             </td>
-                                            <td style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(ticket.created_at)}</td>
-                                            <td style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(ticket.updated_at)}</td>
-                                            <td>
+                                            <td data-label="Created" style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(ticket.created_at)}</td>
+                                            <td data-label="Updated" style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(ticket.updated_at)}</td>
+                                            <td data-label="Action">
                                                 <Link to={`/tickets/${ticket.id}`} className="btn btn-sm" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff', fontWeight: '600' }}>
                                                     <Visibility sx={{ mr: 0.5, verticalAlign: 'middle', fontSize: 16 }} />View
                                                 </Link>

@@ -85,7 +85,7 @@ const Interventions = () => {
                                 <p className="mt-3 text-muted">Loading interventions...</p>
                             </div>
                         ) : filteredInterventions.length > 0 ? (
-                            <table className="table table-hover align-middle mb-0" style={{ borderColor: '#7fffd4' }}>
+                            <table className="table table-hover align-middle mb-0 mobile-responsive-table" style={{ borderColor: '#7fffd4' }}>
                                 <thead style={{ backgroundColor: 'rgba(18, 153, 221, 0.05)', borderBottom: '2px solid #7fffd4' }}>
                                     <tr>
                                         <th style={{ color: '#3a4856', fontWeight: '600' }}>#</th>
@@ -99,18 +99,18 @@ const Interventions = () => {
                                 </thead>
                                 <tbody>
                                     {filteredInterventions.map((intervention, index) => (
-                                        <tr key={intervention.id} style={{ borderBottom: '1px solid #e9ecef' }}>
-                                            <td style={{ color: '#3a4856', fontWeight: '600' }}>{index + 1}</td>
-                                            <td style={{ color: '#3a4856' }}>{intervention.user?.name || 'Unassigned'}</td>
-                                            <td style={{ color: '#3a4856' }}>{intervention.ticket?.user?.name || 'Unknown'}</td>
-                                            <td style={{ color: '#717275', fontSize: '0.95rem' }}>{intervention.ticket?.location || 'N/A'}</td>
-                                            <td style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(intervention.scheduled_at)}</td>
-                                            <td>
+                                        <tr key={intervention.id}>
+                                            <td data-label="#" style={{ color: '#3a4856', fontWeight: '600' }}>{index + 1}</td>
+                                            <td data-label="Technician" style={{ color: '#3a4856' }}>{intervention.user?.name || 'Unassigned'}</td>
+                                            <td data-label="Client" style={{ color: '#3a4856' }}>{intervention.ticket?.user?.name || 'Unknown'}</td>
+                                            <td data-label="Location" style={{ color: '#717275', fontSize: '0.95rem' }}>{intervention.ticket?.location || 'N/A'}</td>
+                                            <td data-label="Start Date" style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(intervention.scheduled_at)}</td>
+                                            <td data-label="Status">
                                                 <span className="badge text-white px-3 py-2" style={{ backgroundColor: getStatusBadgeColor(intervention.status), fontSize: '0.85rem', fontWeight: '600', textTransform: 'capitalize' }}>
                                                     {intervention.status?.replace('_', ' ')}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Action">
                                                 <Link to={`/interventions/${intervention.id}`} className="btn btn-sm" style={{ backgroundColor: '#004598', borderColor: '#004598', color: '#fff', fontWeight: '600' }}>
                                                     <Visibility sx={{ mr: 0.5, verticalAlign: 'middle', fontSize: 16 }} />View
                                                 </Link>
