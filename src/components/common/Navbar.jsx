@@ -1,10 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Build, Notifications, Person, Settings, KeyboardArrowDown, Logout, Menu, Close } from '@mui/icons-material';
+import {
+    Build,
+    Notifications,
+    Menu,
+    Close,
+    Dashboard,
+    Assignment,
+    Handyman,
+    Event,
+    Group,
+    Article,
+    Logout,
+    Login,
+    PersonAdd
+} from '@mui/icons-material';
 import useAuth from '../../hooks/useAuth';
 import useNotifications from '../../hooks/useNotifications';
 import useRoleAccess from '../../hooks/useRoleAccess';
-import useStickyNavbar from '../../hooks/useStickyNavbar';
 import ConfirmDialog from './ConfirmDialog';
 import './Navbar.css';
 
@@ -13,261 +26,195 @@ const Navbar = () => {
     const location = useLocation();
     const { user, logout, isAuthenticated } = useAuth();
     const { unreadCount, markAllAsRead } = useNotifications();
-    const { isAdmin, isTechnician } = useRoleAccess();
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [navbarExpanded, setNavbarExpanded] = useState(false);
-    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-    const dropdownRef = useRef(null);
-    const isSticky = useStickyNavbar(50);
-    const isDashboardPage = location.pathname.includes('/dashboard');
-    const isTransparentState = isDashboardPage && !isSticky && !navbarExpanded;
+    const { isAdmin, isTechnician, isClient } = useRoleAccess();
 
-    // Close dropdown when clicking outside
+    // State
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+    // Dashboard check
+    const isDashboardPage = location.pathname.includes('/dashboard');
+
+    // Scroll Effect (Only relevant for dashboard transparency)
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownOpen(false);
+        const handleScroll = () => {
+            if (window.scrollY > 20) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
             }
         };
 
-        if (dropdownOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Helper: Determine Navbar Class
+    const getNavbarClass = () => {
+        if (!isDashboardPage) return 'navbar-solid'; // Always solid on non-dashboard
+        return scrolled ? 'navbar-solid' : 'navbar-transparent'; // Dynamic on dashboard
+    };
+
+    // Navigation Links Config
+    const getLinks = () => {
+        const links = [];
+
+        if (!isAuthenticated) {
+            links.push({ path: '/', label: 'Home', icon: <Dashboard /> });
+            links.push({ path: '/services', label: 'Services', icon: <Build /> });
+            return links;
         }
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [dropdownOpen]);
+        // Common for all auth users
+        links.push({ path: '/dashboard', label: 'Dashboard', icon: <Dashboard /> });
 
-    const handleLogoutClick = () => {
-        setShowLogoutConfirm(true);
-    };
-
-    const handleConfirmLogout = async () => {
-        setShowLogoutConfirm(false);
-        try {
-            await logout();
-            navigate('/login', { replace: true });
-        } catch (error) {
-            console.error('Logout error:', error);
-            navigate('/login', { replace: true });
+        // Role Specific
+        if (isClient()) {
+            links.push({ path: '/tickets', label: 'My Requests', icon: <Assignment /> });
+            // Clients logic for interventions usually via tickets, but if they have direct link:
+            // links.push({ path: '/interventions', label: 'Interventions' }); 
         }
+
+        if (isTechnician()) {
+            links.push({ path: '/interventions', label: 'Assigned Interventions', icon: <Handyman /> });
+            links.push({ path: '/planning', label: 'Planning', icon: <Event /> });
+        }
+
+        if (isAdmin()) {
+            links.push({ path: '/users', label: 'Users', icon: <Group /> });
+            links.push({ path: '/tickets', label: 'Tickets', icon: <Assignment /> });
+            links.push({ path: '/interventions', label: 'Interventions', icon: <Handyman /> });
+            links.push({ path: '/planning', label: 'Planning', icon: <Event /> });
+        }
+
+        // Common Services link for everyone? 
+        links.push({ path: '/services', label: 'Services', icon: <Build /> });
+
+        return links;
     };
 
-    const handleCancelLogout = () => {
-        setShowLogoutConfirm(false);
-    };
-
-    const handleNavClick = () => {
-        setDropdownOpen(false);
-        // Close mobile navbar when clicking a link
-        setNavbarExpanded(false);
-    };
-
+    const links = getLinks();
     const isActive = (path) => location.pathname === path;
 
+    // Handlers
+    const handleLogout = async () => {
+        try {
+            await logout();
+            setShowLogoutConfirm(false);
+            setMobileOpen(false);
+            navigate('/login');
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    };
+
+    const toggleMobileMenu = () => setMobileOpen(!mobileOpen);
+    const closeMobileMenu = () => setMobileOpen(false);
+
     return (
-        <nav className={`navbar navbar-expand-lg ${isSticky ? 'navbar-sticky' : ''} ${isTransparentState ? 'navbar-transparent' : 'navbar-solid'} ${navbarExpanded ? 'navbar-expanded' : ''}`}>
-            <div className="container">
-                <Link className="navbar-brand" to={isAuthenticated ? "/dashboard" : "/"} onClick={handleNavClick}>
-                    <Build sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    <span>Sogerec</span>
-                </Link>
+        <>
+            <nav className={`navbar-custom ${getNavbarClass()}`}>
+                <div className="container">
+                    {/* Brand */}
+                    <Link to={isAuthenticated ? "/dashboard" : "/"} className="navbar-brand-custom">
+                        <Build fontSize="large" />
+                        <span>Sogerec</span>
+                    </Link>
 
-                {/* Mobile notification icon */}
-                <div className="d-lg-none ms-auto me-4">
-                    {isAuthenticated && (
-                        <Link to="/notifications" className="navbar-icon position-relative" onClick={() => { markAllAsRead(); handleNavClick(); }}>
-                            <Notifications />
-                            {unreadCount > 0 && (
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {unreadCount}
-                                </span>
-                            )}
-                        </Link>
-                    )}
-                </div>
+                    {/* Desktop Menu */}
+                    <div className="desktop-nav">
+                        {links.map((link) => (
+                            <Link
+                                key={link.path}
+                                to={link.path}
+                                className={`nav-link-custom ${isActive(link.path) ? 'active' : ''}`}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
 
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    aria-controls="navbarNav"
-                    aria-expanded={navbarExpanded}
-                    aria-label="Toggle navigation"
-                    onClick={() => setNavbarExpanded(!navbarExpanded)}
-                >
-                    {navbarExpanded ? <Close /> : <Menu />}
-                </button>
-
-                <div className={`collapse navbar-collapse ${navbarExpanded ? 'show' : ''}`} id="navbarNav">
-                    {isAuthenticated ? (
-                        <>
-                            <ul className="navbar-nav ms-lg-5 me-lg-auto">
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}
-                                        to="/dashboard"
-                                        onClick={handleNavClick}
-                                    >
-                                        Dashboard
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/tickets') ? 'active' : ''}`}
-                                        to="/tickets"
-                                        onClick={handleNavClick}
-                                    >
-                                        {isAdmin() ? 'Tickets Management' : 'My Requests'}
-                                    </Link>
-                                </li>
-                                {(isAdmin() || isTechnician()) && (
-                                    <li className="nav-item">
-                                        <Link
-                                            className={`nav-link ${isActive('/interventions') ? 'active' : ''}`}
-                                            to="/interventions"
-                                            onClick={handleNavClick}
-                                        >
-                                            Interventions
-                                        </Link>
-                                    </li>
-                                )}
-                                {(isAdmin() || isTechnician()) && (
-                                    <li className="nav-item">
-                                        <Link
-                                            className={`nav-link ${isActive('/planning') ? 'active' : ''}`}
-                                            to="/planning"
-                                            onClick={handleNavClick}
-                                        >
-                                            Planning
-                                        </Link>
-                                    </li>
-                                )}
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link ${isActive('/services') ? 'active' : ''}`}
-                                        to="/services"
-                                        onClick={handleNavClick}
-                                    >
-                                        Services
-                                    </Link>
-                                </li>
-                                {isAdmin() && (
-                                    <>
-                                        <li className="nav-item">
-                                            <Link
-                                                className={`nav-link ${isActive('/users') ? 'active' : ''}`}
-                                                to="/users"
-                                                onClick={handleNavClick}
-                                            >
-                                                Users
-                                            </Link>
-                                        </li>
-                                        <li className="nav-item dropdown" ref={dropdownRef}>
-                                            <a
-                                                className="nav-link dropdown-toggle"
-                                                href="#"
-                                                role="button"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    setDropdownOpen(!dropdownOpen);
-                                                }}
-                                                aria-expanded={dropdownOpen}
-                                                aria-haspopup="true"
-                                            >
-                                                System
-                                                <KeyboardArrowDown
-                                                    sx={{
-                                                        fontSize: '0.75rem',
-                                                        ml: 0.5,
-                                                        verticalAlign: 'middle',
-                                                        transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                        transition: 'transform 0.3s ease'
-                                                    }}
-                                                />
-                                            </a>
-                                            <ul className={`dropdown-menu dropdown-menu-light ${dropdownOpen ? 'show' : ''}`}>
-                                                <li>
-                                                    <Link className="dropdown-item" to="/reports" onClick={handleNavClick}>
-                                                        Reports
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </>
-                                )}
-                            </ul>
-
-                            <div className="d-none d-lg-block">
-                                <Link to="/notifications" className="navbar-icon position-relative me-3" onClick={() => { markAllAsRead(); handleNavClick(); }}>
+                        {isAuthenticated ? (
+                            <>
+                                <Link to="/notifications" className="nav-icon-btn" onClick={markAllAsRead}>
                                     <Notifications />
-                                    {unreadCount > 0 && (
-                                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                            {unreadCount}
-                                        </span>
-                                    )}
+                                    {unreadCount > 0 && <span className="badge-custom">{unreadCount}</span>}
                                 </Link>
-                                <button
-                                    onClick={handleLogoutClick}
-                                    className="navbar-icon border-0 bg-transparent text-danger desktop-logout-btn"
-                                    title="Logout"
-                                    aria-label="Logout"
-                                >
+                                <button className="nav-icon-btn" onClick={() => setShowLogoutConfirm(true)} title="Logout">
                                     <Logout />
                                 </button>
-                            </div>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login" className="btn btn-sm btn-light text-primary fw-bold ms-2">Login</Link>
+                                <Link to="/register" className="btn btn-sm btn-outline-light ms-2">Register</Link>
+                            </>
+                        )}
+                    </div>
 
-                            {/* Mobile logout for non-admin users */}
-                            <ul className="navbar-nav d-lg-none">
-                                <li className="nav-item">
-                                    <button className="nav-link btn btn-link text-danger w-100 text-start ps-0" onClick={handleLogoutClick}>
-                                        <Logout sx={{ mr: 1, fontSize: 20 }} />
-                                        <b>Logout</b>
-                                    </button>
-                                </li>
-                            </ul>
-                        </>
-                    ) : (
-                        <>
-                            <ul className="navbar-nav ms-lg-5 me-lg-auto">
-                                <li className="nav-item">
-                                    <Link className={`nav-link ${isActive('/') ? 'active' : ''}`} to="/" onClick={handleNavClick}>
-                                        Home
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className={`nav-link ${isActive('/services') ? 'active' : ''}`} to="/services" onClick={handleNavClick}>
-                                        Services
-                                    </Link>
-                                </li>
-                            </ul>
-                            <div className="d-none d-lg-block">
-                                <Link to="/login" className="btn btn-primary me-2">Login</Link>
-                                <Link to="/register" className="btn btn-secondary">Register</Link>
-                            </div>
-                            <ul className="navbar-nav d-lg-none">
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/login" onClick={handleNavClick}>Login</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/register" onClick={handleNavClick}>Register</Link>
-                                </li>
-                            </ul>
-                        </>
-                    )}
+                    {/* Mobile Toggle */}
+                    <button className="mobile-toggle-btn" onClick={toggleMobileMenu} aria-label="Toggle Menu">
+                        {mobileOpen ? <Close /> : <Menu />}
+                    </button>
                 </div>
+            </nav>
+
+            {/* Mobile Drawer */}
+            <div className={`drawer-backdrop ${mobileOpen ? 'visible' : ''}`} onClick={closeMobileMenu}></div>
+            <div className={`mobile-drawer ${mobileOpen ? 'open' : ''}`}>
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h4 className="text-white m-0">Menu</h4>
+                    <button className="btn btn-sm text-white p-0" onClick={closeMobileMenu}><Close /></button>
+                </div>
+
+                {links.map((link) => (
+                    <Link
+                        key={link.path}
+                        to={link.path}
+                        className="mobile-nav-link"
+                        onClick={closeMobileMenu}
+                    >
+                        {link.icon}
+                        {link.label}
+                    </Link>
+                ))}
+
+                <hr className="border-light opacity-25 my-3" />
+
+                {isAuthenticated ? (
+                    <>
+                        <Link to="/notifications" className="mobile-nav-link" onClick={() => { markAllAsRead(); closeMobileMenu(); }}>
+                            <Notifications />
+                            Notifications
+                            {unreadCount > 0 && <span className="badge bg-danger ms-2">{unreadCount}</span>}
+                        </Link>
+                        <button className="mobile-nav-link bg-transparent border-0 w-100 text-start" onClick={() => setShowLogoutConfirm(true)}>
+                            <Logout />
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" className="mobile-nav-link" onClick={closeMobileMenu}>
+                            <Login /> Login
+                        </Link>
+                        <Link to="/register" className="mobile-nav-link" onClick={closeMobileMenu}>
+                            <PersonAdd /> Register
+                        </Link>
+                    </>
+                )}
             </div>
+
+            {/* Logout Dialog */}
             {showLogoutConfirm && (
                 <ConfirmDialog
-                    title="Logout Confirmation"
+                    title="Confirm Logout"
                     message="Are you sure you want to log out?"
-                    onConfirm={handleConfirmLogout}
-                    onCancel={handleCancelLogout}
-                    confirmText="Logout"
-                    cancelText="Cancel"
+                    onConfirm={handleLogout}
+                    onCancel={() => setShowLogoutConfirm(false)}
                 />
             )}
-        </nav>
+        </>
     );
 };
 
