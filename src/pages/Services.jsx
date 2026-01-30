@@ -1,13 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Twitter, Facebook, Pinterest, Bookmark } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Twitter, Facebook, Pinterest, Bookmark, ExpandMore, ExpandLess } from '@mui/icons-material';
 import servicesData from '../data/servicesData';
 
 const Services = () => {
+    const [expandedServiceId, setExpandedServiceId] = useState(null);
+
     // Separate main services and trending/extra services for layout purposes
     const mainServices = servicesData.slice(0, 3);
     const trendingService = servicesData[3];
     const emergencyService = servicesData[4];
+
+    const toggleExpand = (serviceId) => {
+        setExpandedServiceId(expandedServiceId === serviceId ? null : serviceId);
+    };
 
     return (
         <main>
@@ -42,8 +47,32 @@ const Services = () => {
                                                 <span className="badge bg-primary rounded-pill ms-auto">{service.count}</span>
                                             </div>
                                             <p className="mb-0">{service.description}</p>
+
+                                            {/* Expandable Content */}
+                                            {expandedServiceId === service.id && (
+                                                <div className="mt-3 pt-3 border-top">
+                                                    {service.content ? (
+                                                        <div dangerouslySetInnerHTML={{ __html: service.content }} />
+                                                    ) : (
+                                                        <div className="alert alert-info">
+                                                            <h6>No documentation available yet</h6>
+                                                            <p className="mb-0 small">We are currently updating the documentation for this service.</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
                                             <div className="mt-auto">
-                                                <Link to={`/services/${service.slug}`} className="btn custom-btn mt-3">Learn More</Link>
+                                                <button
+                                                    onClick={() => toggleExpand(service.id)}
+                                                    className="btn custom-btn mt-3 d-flex align-items-center gap-2"
+                                                >
+                                                    {expandedServiceId === service.id ? (
+                                                        <>Show Less <ExpandLess /></>
+                                                    ) : (
+                                                        <>Learn More <ExpandMore /></>
+                                                    )}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -75,16 +104,40 @@ const Services = () => {
                         {trendingService && (
                             <div className="col-lg-6 col-md-6 col-12 mt-3 mb-4 mb-lg-0">
                                 <div className="custom-block bg-white shadow-lg h-100">
-                                    <Link to={`/services/${trendingService.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <div className="d-flex align-items-center p-4">
-                                            <div>
-                                                <h5 className="mb-2">{trendingService.title}</h5>
-                                                <p className="mb-0">{trendingService.description}</p>
-                                            </div>
-                                            <span className="badge bg-primary rounded-pill ms-auto">{trendingService.count}</span>
+                                    <div className="d-flex align-items-center p-4">
+                                        <div>
+                                            <h5 className="mb-2">{trendingService.title}</h5>
+                                            <p className="mb-0">{trendingService.description}</p>
                                         </div>
-                                        <img src={trendingService.icon} className="custom-block-image img-fluid w-100" alt={trendingService.title} style={{ height: '200px', objectFit: 'cover' }} />
-                                    </Link>
+                                        <span className="badge bg-primary rounded-pill ms-auto">{trendingService.count}</span>
+                                    </div>
+                                    <img src={trendingService.icon} className="custom-block-image img-fluid w-100" alt={trendingService.title} style={{ height: '200px', objectFit: 'cover' }} />
+
+                                    {expandedServiceId === trendingService.id && (
+                                        <div className="p-4 border-top">
+                                            {trendingService.content ? (
+                                                <div dangerouslySetInnerHTML={{ __html: trendingService.content }} />
+                                            ) : (
+                                                <div className="alert alert-info">
+                                                    <h6>No documentation available yet</h6>
+                                                    <p className="mb-0 small">We are currently updating the documentation for this service.</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    <div className="p-4 pt-0">
+                                        <button
+                                            onClick={() => toggleExpand(trendingService.id)}
+                                            className="btn custom-btn w-100 d-flex align-items-center justify-content-center gap-2"
+                                        >
+                                            {expandedServiceId === trendingService.id ? (
+                                                <>Show Less <ExpandLess /></>
+                                            ) : (
+                                                <>Learn More <ExpandMore /></>
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -100,8 +153,31 @@ const Services = () => {
                                                 <span className="badge bg-primary rounded-pill ms-auto">{emergencyService.count}</span>
                                             </div>
                                             <p className="text-white">{emergencyService.description}</p>
+
+                                            {expandedServiceId === emergencyService.id && (
+                                                <div className="mt-3 p-3 bg-white bg-opacity-10 rounded">
+                                                    {emergencyService.content ? (
+                                                        <div className="text-white" dangerouslySetInnerHTML={{ __html: emergencyService.content }} />
+                                                    ) : (
+                                                        <div className="alert alert-light">
+                                                            <h6>No documentation available yet</h6>
+                                                            <p className="mb-0 small">We are currently updating the documentation for this service.</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
                                             <div className="mt-auto">
-                                                <Link to={`/services/${emergencyService.slug}`} className="btn custom-btn mt-2">Learn More</Link>
+                                                <button
+                                                    onClick={() => toggleExpand(emergencyService.id)}
+                                                    className="btn custom-btn mt-2 d-flex align-items-center gap-2"
+                                                >
+                                                    {expandedServiceId === emergencyService.id ? (
+                                                        <>Show Less <ExpandLess /></>
+                                                    ) : (
+                                                        <>Learn More <ExpandMore /></>
+                                                    )}
+                                                </button>
                                             </div>
                                         </div>
                                         <div className="social-share d-flex">

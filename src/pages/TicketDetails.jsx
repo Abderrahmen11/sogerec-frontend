@@ -146,7 +146,7 @@ const TicketDetails = () => {
                                 </div>
                             </div>
 
-                            {isAdmin && (
+                            {isAdmin && !selectedTicket.assigned_to_user && (
                                 <div className="mt-5 pt-4" ref={assignmentRef}>
                                     {!showAssignForm ? (
                                         <div className="text-center mb-4">

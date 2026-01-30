@@ -1,7 +1,40 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import api from '../services/api';
 
 const Contact = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        setSuccess(false);
+
+        try {
+            await api.post('/contact', formData);
+            setSuccess(true);
+            setFormData({ name: '', email: '', subject: '', message: '' });
+            setTimeout(() => setSuccess(false), 5000);
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to send message. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <>
             {/* HEADER */}
@@ -22,42 +55,92 @@ const Contact = () => {
                     <div className="row">
 
                         <div className="col-lg-12 col-12">
-                            <h3 className="mb-4 pb-2">We’re here to help you</h3>
+                            <h3 className="mb-4 pb-2">We're here to help you</h3>
                             <p className="mb-5">If you have any questions about our maintenance services or need technical
                                 assistance, please fill out the form below.</p>
                         </div>
 
                         <div className="col-lg-6 col-12">
-                            <form action="#" method="post" className="custom-form contact-form" role="form">
+                            {success && (
+                                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> Your message has been sent. We'll get back to you soon!
+                                    <button type="button" className="btn-close" onClick={() => setSuccess(false)}></button>
+                                </div>
+                            )}
+                            {error && (
+                                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {error}
+                                    <button type="button" className="btn-close" onClick={() => setError('')}></button>
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit} className="custom-form contact-form">
                                 <div className="row">
                                     <div className="col-lg-6 col-md-6 col-12">
                                         <div className="form-floating">
-                                            <input type="text" name="name" id="name" className="form-control" placeholder="Name" required />
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                id="name"
+                                                className="form-control"
+                                                placeholder="Name"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                required
+                                            />
                                             <label htmlFor="name">Name</label>
                                         </div>
                                     </div>
 
                                     <div className="col-lg-6 col-md-6 col-12">
                                         <div className="form-floating">
-                                            <input type="email" name="email" id="email" className="form-control" placeholder="Email address" required />
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                id="email"
+                                                className="form-control"
+                                                placeholder="Email address"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                required
+                                            />
                                             <label htmlFor="email">Email address</label>
                                         </div>
                                     </div>
 
                                     <div className="col-lg-12 col-12">
                                         <div className="form-floating">
-                                            <input type="text" name="subject" id="subject" className="form-control" placeholder="Subject" required />
+                                            <input
+                                                type="text"
+                                                name="subject"
+                                                id="subject"
+                                                className="form-control"
+                                                placeholder="Subject"
+                                                value={formData.subject}
+                                                onChange={handleChange}
+                                                required
+                                            />
                                             <label htmlFor="subject">Subject</label>
                                         </div>
 
                                         <div className="form-floating">
-                                            <textarea className="form-control" id="message" name="message" placeholder="Your message"></textarea>
+                                            <textarea
+                                                className="form-control"
+                                                id="message"
+                                                name="message"
+                                                placeholder="Your message"
+                                                value={formData.message}
+                                                onChange={handleChange}
+                                                required
+                                            ></textarea>
                                             <label htmlFor="message">Your Message</label>
                                         </div>
                                     </div>
 
                                     <div className="col-lg-4 col-12 ms-auto">
-                                        <button type="submit" className="form-control">Send</button>
+                                        <button type="submit" className="form-control" disabled={loading}>
+                                            {loading ? 'Sending...' : 'Send'}
+                                        </button>
                                     </div>
                                 </div>
                             </form>

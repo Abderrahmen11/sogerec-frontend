@@ -11,7 +11,6 @@ const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
 const Contact = lazy(() => import('../pages/Contact'));
 const Services = lazy(() => import('../pages/Services'));
-const ServiceDetails = lazy(() => import('../pages/ServiceDetails'));
 const GetStarted = lazy(() => import('../pages/GetStarted'));
 
 // Private pages
@@ -40,7 +39,6 @@ const AppRouter = () => (
                 <Route path="/register" element={<Register />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/services" element={<Services />} />
-                <Route path="/services/:slug" element={<ServiceDetails />} />
                 <Route path="/get-started" element={<GetStarted />} />
 
                 {/* Private routes */}
