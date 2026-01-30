@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import AnimatedNumber from '../common/AnimatedNumber';
 import useInterventions from '../../hooks/useInterventions';
+import { Assignment, Autorenew, CheckCircle, TrendingUp } from '@mui/icons-material';
 import './DashboardStyles.css';
 
 const DashboardTechnicien = () => {
@@ -43,31 +44,64 @@ const DashboardTechnicien = () => {
 
             <section className="section-padding">
                 <div className="container">
-                    <div className="stats-block shadow-lg" style={{ background: 'linear-gradient(120deg, #0d6efd 60%, #198754 100%)', color: '#fff', borderRadius: '16px', padding: '24px 0', marginBottom: '24px' }}>
-                        <div className="row">
-                            <div className="col-md-3 col-6 text-center">
-                                <p className="display-6 fw-bold mb-0">
+                    <div className="row g-4 mb-4">
+                        <div className="col-lg-3 col-md-6 col-12">
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-start border-5 border-primary">
+                                <div className="d-flex align-items-center justify-content-between mb-2">
+                                    <h6 className="mb-0 text-muted">Assigned</h6>
+                                    <div className="badge bg-primary bg-opacity-10 text-primary rounded-circle p-2">
+                                        <Assignment />
+                                    </div>
+                                </div>
+                                <h3 className="fw-bold mb-0">
                                     <AnimatedNumber value={assignedCount} />
-                                </p>
-                                <p>Assigned Interventions</p>
+                                </h3>
+                                <p className="text-muted small mb-0 mt-2">Total assigned tasks</p>
                             </div>
-                            <div className="col-md-3 col-6 text-center">
-                                <p className="display-6 fw-bold mb-0">
+                        </div>
+
+                        <div className="col-lg-3 col-md-6 col-12">
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-start border-5 border-warning">
+                                <div className="d-flex align-items-center justify-content-between mb-2">
+                                    <h6 className="mb-0 text-muted">In Progress</h6>
+                                    <div className="badge bg-warning bg-opacity-10 text-warning rounded-circle p-2">
+                                        <Autorenew />
+                                    </div>
+                                </div>
+                                <h3 className="fw-bold mb-0">
                                     <AnimatedNumber value={inProgressCount} />
-                                </p>
-                                <p>In Progress</p>
+                                </h3>
+                                <p className="text-muted small mb-0 mt-2">Currently active</p>
                             </div>
-                            <div className="col-md-3 col-6 text-center">
-                                <p className="display-6 fw-bold mb-0">
+                        </div>
+
+                        <div className="col-lg-3 col-md-6 col-12">
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-start border-5 border-success">
+                                <div className="d-flex align-items-center justify-content-between mb-2">
+                                    <h6 className="mb-0 text-muted">Completed</h6>
+                                    <div className="badge bg-success bg-opacity-10 text-success rounded-circle p-2">
+                                        <CheckCircle />
+                                    </div>
+                                </div>
+                                <h3 className="fw-bold mb-0">
                                     <AnimatedNumber value={completedCount} />
-                                </p>
-                                <p>Completed</p>
+                                </h3>
+                                <p className="text-muted small mb-0 mt-2">Finished tasks</p>
                             </div>
-                            <div className="col-md-3 col-6 text-center">
-                                <p className="display-6 fw-bold mb-0">
+                        </div>
+
+                        <div className="col-lg-3 col-md-6 col-12">
+                            <div className="custom-block bg-white shadow-lg p-4 h-100 border-start border-5 border-info">
+                                <div className="d-flex align-items-center justify-content-between mb-2">
+                                    <h6 className="mb-0 text-muted">Success Rate</h6>
+                                    <div className="badge bg-info bg-opacity-10 text-info rounded-circle p-2">
+                                        <TrendingUp />
+                                    </div>
+                                </div>
+                                <h3 className="fw-bold mb-0">
                                     <AnimatedNumber value={completionRate} />%
-                                </p>
-                                <p>Success Rate</p>
+                                </h3>
+                                <p className="text-muted small mb-0 mt-2">Completion efficiency</p>
                             </div>
                         </div>
                     </div>

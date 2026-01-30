@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import './auth.css';
 
 const Login = () => {
@@ -8,6 +9,7 @@ const Login = () => {
     const { login, loading, error } = useAuth();
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [localError, setLocalError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,16 +51,26 @@ const Login = () => {
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password" className="form-label">Password</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        className="form-control"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="current-password"
-                                    />
+                                    <div className="input-group">
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            id="password"
+                                            name="password"
+                                            className="form-control"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            required
+                                            autoComplete="current-password"
+                                        />
+                                        <button
+                                            className="btn btn-outline-secondary"
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            style={{ zIndex: 0 }}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </button>
+                                    </div>
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
                                     {loading ? 'Logging in...' : 'Login'}

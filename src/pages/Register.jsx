@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import './auth.css';
 
 const Register = () => {
@@ -14,6 +15,8 @@ const Register = () => {
         role: 'client',
     });
     const [errors, setErrors] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -85,30 +88,50 @@ const Register = () => {
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password" className="form-label">Password</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        className="form-control"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="new-password"
-                                    />
+                                    <div className="input-group">
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            id="password"
+                                            name="password"
+                                            className="form-control"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            required
+                                            autoComplete="new-password"
+                                        />
+                                        <button
+                                            className="btn btn-outline-secondary"
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            style={{ zIndex: 0 }}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password_confirmation" className="form-label">Confirm Password</label>
-                                    <input
-                                        type="password"
-                                        id="password_confirmation"
-                                        name="password_confirmation"
-                                        className="form-control"
-                                        value={formData.password_confirmation}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="new-password"
-                                    />
-                                    {errors.password && <small className="text-danger">{errors.password}</small>}
+                                    <div className="input-group">
+                                        <input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            id="password_confirmation"
+                                            name="password_confirmation"
+                                            className="form-control"
+                                            value={formData.password_confirmation}
+                                            onChange={handleChange}
+                                            required
+                                            autoComplete="new-password"
+                                        />
+                                        <button
+                                            className="btn btn-outline-secondary"
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            style={{ zIndex: 0 }}
+                                        >
+                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                        </button>
+                                    </div>
+                                    {errors.password && <small className="text-danger d-block mt-1">{errors.password}</small>}
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
                                     {loading ? 'Creating...' : 'Register'}
