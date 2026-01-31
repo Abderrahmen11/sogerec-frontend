@@ -14,14 +14,28 @@ export function InterventionProvider({ children }) {
         setError(null);
         try {
             const data = await interventionService.getAll(params);
-            setInterventions(data.data || data);
+            setInterventions(Array.isArray(data) ? data : (data.data || data));
             return data;
         } catch (err) {
             setError(err.message || 'Failed to fetch interventions');
         } finally {
             setLoading(false);
         }
+    }, []);
 
+    const fetchPlanning = useCallback(async (params = {}) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await interventionService.getPlanning(params);
+            const list = Array.isArray(data) ? data : (data.data || data);
+            setInterventions(list);
+            return list;
+        } catch (err) {
+            setError(err.message || 'Failed to fetch planning');
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
     const fetchInterventionById = useCallback(async (id) => {
@@ -44,16 +58,24 @@ export function InterventionProvider({ children }) {
         setError(null);
         try {
             const data = await interventionService.create(interventionData);
-            setInterventions([...interventions, data.data || data]);
+            const intervention = data?.intervention ?? data?.data ?? data;
+            if (intervention) {
+                // Add the new intervention to state
+                setInterventions(prev => [...prev.filter(i => i.id !== intervention.id), intervention]);
+                // Refetch the complete list to ensure consistency with backend
+                setTimeout(() => {
+                    fetchInterventions();
+                }, 500);
+            }
             return data;
         } catch (err) {
-            setError(err.message || 'Failed to create intervention');
+            setError(err.message || err.response?.data?.message || 'Failed to create intervention');
             throw err;
         } finally {
             setLoading(false);
         }
 
-    }, [interventions]);
+    }, [fetchInterventions]);
 
     const updateIntervention = useCallback(async (id, interventionData) => {
         setLoading(true);
@@ -77,7 +99,7 @@ export function InterventionProvider({ children }) {
         setError(null);
         try {
             const data = await interventionService.updateStatus(id, status);
-            setInterventions(interventions.map(i => i.id === id ? { ...i, status: status } : i));
+            setInterventions(prev => prev.map(i => i.id === id ? { ...i, status } : i));
             return data;
         } catch (err) {
             setError(err.message || 'Failed to update intervention status');
@@ -85,15 +107,18 @@ export function InterventionProvider({ children }) {
         } finally {
             setLoading(false);
         }
-    }, [interventions]);
+    }, []);
 
     const submitInterventionReport = useCallback(async (id, report) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await interventionService.submitReport(id, report);
-            setInterventions(interventions.map(i => i.id === id ? { ...i, status: 'completed' } : i));
-            if (selectedIntervention?.id === id) setSelectedIntervention({ ...selectedIntervention, status: 'completed' });
+            const payload = typeof report === 'object' && report?.report != null
+                ? report
+                : { report: String(report ?? '') };
+            const data = await interventionService.submitReport(id, payload);
+            setInterventions(prev => prev.map(i => i.id === id ? { ...i, status: 'completed' } : i));
+            setSelectedIntervention(prev => prev?.id === id ? { ...prev, status: 'completed' } : prev);
             return data;
         } catch (err) {
             setError(err.message || 'Failed to submit report');
@@ -101,7 +126,7 @@ export function InterventionProvider({ children }) {
         } finally {
             setLoading(false);
         }
-    }, [interventions, selectedIntervention]);
+    }, []);
 
     const value = {
         interventions,
@@ -109,6 +134,7 @@ export function InterventionProvider({ children }) {
         loading,
         error,
         fetchInterventions,
+        fetchPlanning,
         fetchInterventionById,
         createIntervention,
         updateIntervention,

@@ -28,11 +28,36 @@ const TicketDetails = () => {
 
     const handleAssignSubmit = async (formData) => {
         try {
-            await createIntervention(formData);
-            setSuccessMessage('Technician assigned successfully!');
+            const response = await createIntervention(formData);
+            // Do NOT trust success - verify response contains assignment confirmation
+            const data = response?.data ?? response;
+            const hasAssignment = Boolean(
+                data?.assignment_confirmed ||
+                data?.assigned_to_user_id ||
+                data?.technician_name ||
+                (data?.intervention?.ticket?.assigned_to ?? data?.ticket?.assigned_to)
+            );
+
+            if (!hasAssignment) {
+                throw new Error('Assignment did not persist. Server did not confirm assignment.');
+            }
+
             setShowAssignForm(false);
-            // Optionally refresh ticket to see assignment status
-            fetchTicketById(id);
+
+            // Refetch ticket and verify technician appears - no optimistic UI
+            const refetchedTicket = await fetchTicketById(id);
+            const ticket = refetchedTicket?.data ?? refetchedTicket;
+            const technicianPresent =
+                ticket?.assigned_to_user?.name ||
+                ticket?.assignedTo?.name ||
+                ticket?.assigned_to_user_id ||
+                ticket?.technician_name;
+
+            if (!technicianPresent) {
+                throw new Error('Assignment may not have persisted. Please refresh the page to verify.');
+            }
+
+            setSuccessMessage('Technician assigned successfully!');
             setTimeout(() => setSuccessMessage(''), 5000);
         } catch (err) {
             console.error("Assignment failed:", err);
@@ -137,7 +162,7 @@ const TicketDetails = () => {
                                         <div className="p-3 bg-light rounded-3 h-100">
                                             <div className="text-muted small text-uppercase fw-bold mb-1">Assigned Technician</div>
                                             <div className="fw-semibold text-primary">
-                                                {selectedTicket.assigned_to_user?.name || (
+                                                {selectedTicket.assigned_to_user?.name || selectedTicket.assignedTo?.name || selectedTicket.technician_name || (
                                                     <span className="text-muted">Currently Unassigned</span>
                                                 )}
                                             </div>
@@ -146,7 +171,7 @@ const TicketDetails = () => {
                                 </div>
                             </div>
 
-                            {isAdmin && !selectedTicket.assigned_to_user && (
+                            {isAdmin && !selectedTicket.assigned_to_user && !selectedTicket.assignedTo && !selectedTicket.assigned_to_user_id && (
                                 <div className="mt-5 pt-4" ref={assignmentRef}>
                                     {!showAssignForm ? (
                                         <div className="text-center mb-4">

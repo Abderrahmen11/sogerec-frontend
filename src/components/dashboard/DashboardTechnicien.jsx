@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import AnimatedNumber from '../common/AnimatedNumber';
 import useInterventions from '../../hooks/useInterventions';
@@ -16,9 +17,10 @@ const DashboardTechnicien = () => {
     const handleStatusUpdate = async (id, newStatus) => {
         try {
             await updateInterventionStatus(id, newStatus);
+            fetchInterventions();
         } catch (err) {
             console.error("Failed to update status", err);
-            alert("Failed to update status. Please try again.");
+            alert(err.response?.data?.message || "Failed to update status. Please try again.");
         }
     };
 
@@ -161,11 +163,12 @@ const DashboardTechnicien = () => {
                                         </div>
                                         <h5 className="mb-3">{intervention.title}</h5>
                                         <p className="mb-2"><strong>Ticket:</strong> {intervention.ticket?.title || 'N/A'}</p>
+                                        <p className="mb-2"><strong>Client:</strong> {intervention.ticket?.user?.name || 'Unknown'}</p>
                                         <p className="mb-2"><strong>Location:</strong> {intervention.location || 'N/A'}</p>
                                         <div className="mt-auto pt-3 border-top">
                                             <div className="d-flex gap-2 flex-wrap">
-                                                <button onClick={() => handleStatusUpdate(intervention.id, 'in_progress')} className="btn btn-warning btn-sm" disabled={intervention.status !== 'pending'}>Start</button>
-                                                <button onClick={() => handleStatusUpdate(intervention.id, 'completed')} className="btn btn-success btn-sm" disabled={intervention.status === 'completed'}>Complete</button>
+                                                <button onClick={() => handleStatusUpdate(intervention.id, 'in_progress')} className="btn btn-warning btn-sm" disabled={intervention.status !== 'scheduled' && intervention.status !== 'pending'}>Start</button>
+                                                <Link to={`/interventions/${intervention.id}`} className="btn btn-outline-primary btn-sm">View / Report</Link>
                                             </div>
                                         </div>
                                     </div>

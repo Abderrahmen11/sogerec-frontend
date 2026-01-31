@@ -36,6 +36,12 @@ const NotificationItem = ({ notification }) => {
             case 'App\\Notifications\\InterventionStatusUpdatedNotification':
             case 'intervention_status_updated':
                 return { icon: <Schedule />, color: '#fd7e14' };
+            case 'App\\Notifications\\InterventionScheduledNotification':
+            case 'intervention_scheduled':
+                return { icon: <Build />, color: '#198754' };
+            case 'ticket_cancelled':
+            case 'ticket_status':
+                return { icon: <Warning />, color: '#dc3545' };
             case 'success':
                 return { icon: <CheckCircle />, color: '#198754' };
             case 'error':

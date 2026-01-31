@@ -10,15 +10,15 @@
     --p-color: #717275;
     --border-color: #7fffd4;
     --link-hover-color: #5441b0;
-    
+
     /* Navbar colors */
     --nav-bg: transparent;
     --nav-bg-sticky: var(--secondary-color);
     --nav-text: var(--white-color);
     --nav-border: rgba(128, 208, 199, 0.35);
-    
+
     /* Footer colors */
-    --footer-bg: #0a1f29;
+    --footer-bg: var(--secondary-color);
     --footer-text: rgba(255, 255, 255, 0.8);
     --footer-title-color: var(--primary-color);
 

@@ -8,9 +8,20 @@ const Interventions = () => {
     const { interventions, loading, fetchInterventions } = useInterventions();
     const { isTechnician } = useAuth();
     const [filterStatus, setFilterStatus] = useState('all');
+    const [filterDateFrom, setFilterDateFrom] = useState('');
+    const [filterDateTo, setFilterDateTo] = useState('');
+    const [sortOrder, setSortOrder] = useState('desc'); // 'asc' = oldest first, 'desc' = newest first
 
     useEffect(() => {
         fetchInterventions();
+
+        // Re-fetch when user returns to this page (focus event)
+        const handleFocus = () => {
+            fetchInterventions();
+        };
+
+        window.addEventListener('focus', handleFocus);
+        return () => window.removeEventListener('focus', handleFocus);
     }, [fetchInterventions]);
 
     const getStatusBadgeColor = (status) => {
@@ -34,7 +45,33 @@ const Interventions = () => {
     };
 
     const filteredInterventions = interventions?.filter(intervention => {
-        return filterStatus === 'all' || intervention.status === filterStatus;
+        const statusMatch = filterStatus === 'all' || intervention.status === filterStatus;
+
+        // Date filtering
+        if (filterDateFrom || filterDateTo) {
+            const interventionDate = new Date(intervention.scheduled_at);
+            if (filterDateFrom) {
+                const fromDate = new Date(filterDateFrom);
+                if (interventionDate < fromDate) return false;
+            }
+            if (filterDateTo) {
+                const toDate = new Date(filterDateTo);
+                toDate.setHours(23, 59, 59, 999);
+                if (interventionDate > toDate) return false;
+            }
+        }
+
+        return statusMatch;
+    }).sort((a, b) => {
+        // Sorting by scheduled_at date
+        const dateA = new Date(a.scheduled_at);
+        const dateB = new Date(b.scheduled_at);
+
+        if (sortOrder === 'desc') {
+            return dateB - dateA; // Newest first
+        } else {
+            return dateA - dateB; // Oldest first
+        }
     }) || [];
 
     return (
@@ -72,6 +109,56 @@ const Interventions = () => {
                             <option value="cancelled">Cancelled</option>
                         </select>
                     </div>
+                    <div className="col-md-6 col-lg-3">
+                        <label className="form-label fw-bold">From Date</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            value={filterDateFrom}
+                            onChange={(e) => setFilterDateFrom(e.target.value)}
+                            style={{ borderColor: '#7fffd4' }}
+                        />
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                        <label className="form-label fw-bold">To Date</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            value={filterDateTo}
+                            onChange={(e) => setFilterDateTo(e.target.value)}
+                            style={{ borderColor: '#7fffd4' }}
+                        />
+                    </div>
+                    {(filterStatus !== 'all' || filterDateFrom || filterDateTo) && (
+                        <div className="col-md-6 col-lg-3 d-flex align-items-end">
+                            <button
+                                className="btn btn-outline-secondary w-100"
+                                onClick={() => {
+                                    setFilterStatus('all');
+                                    setFilterDateFrom('');
+                                    setFilterDateTo('');
+                                }}
+                            >
+                                Clear Filters
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Sort Controls */}
+                <div className="row mb-4">
+                    <div className="col-md-6 col-lg-3">
+                        <label className="form-label fw-bold">Sort By</label>
+                        <select
+                            className="form-select"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                            style={{ borderColor: '#7fffd4' }}
+                        >
+                            <option value="desc">Newest First</option>
+                            <option value="asc">Oldest First</option>
+                        </select>
+                    </div>
                 </div>
 
                 {/* Interventions Table */}
@@ -102,8 +189,8 @@ const Interventions = () => {
                                         <tr key={intervention.id}>
                                             <td data-label="#" style={{ color: '#3a4856', fontWeight: '600' }}>{index + 1}</td>
                                             <td data-label="Technician" style={{ color: '#3a4856' }}>{intervention.user?.name || 'Unassigned'}</td>
-                                            <td data-label="Client" style={{ color: '#3a4856' }}>{intervention.ticket?.user?.name || 'Unknown'}</td>
-                                            <td data-label="Location" style={{ color: '#717275', fontSize: '0.95rem' }}>{intervention.ticket?.location || 'N/A'}</td>
+                                            <td data-label="Client" style={{ color: '#3a4856' }}>{intervention.ticket?.user?.name || 'N/A'}</td>
+                                            <td data-label="Location" style={{ color: '#717275', fontSize: '0.95rem' }}>{intervention.location || intervention.ticket?.location || 'N/A'}</td>
                                             <td data-label="Start Date" style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(intervention.scheduled_at)}</td>
                                             <td data-label="Status">
                                                 <span className="badge text-white px-3 py-2" style={{ backgroundColor: getStatusBadgeColor(intervention.status), fontSize: '0.85rem', fontWeight: '600', textTransform: 'capitalize' }}>

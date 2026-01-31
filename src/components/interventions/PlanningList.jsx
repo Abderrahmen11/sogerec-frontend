@@ -1,8 +1,8 @@
 import React from 'react';
 import { Person } from '@mui/icons-material';
-import { CalendarToday } from '@mui/icons-material';
+import { CalendarToday, ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
-const PlanningList = ({ interventions, loading, getStatusBadgeColor, formatDate }) => {
+const PlanningList = ({ interventions, loading, getStatusBadgeColor, formatDate, sortOrder }) => {
     return (
         <div className="custom-block bg-white shadow-lg p-4">
             <h5 className="mb-4" style={{ color: '#3a4856', fontWeight: '600' }}>
@@ -24,7 +24,15 @@ const PlanningList = ({ interventions, loading, getStatusBadgeColor, formatDate 
                                 <th style={{ color: '#3a4856', fontWeight: '600' }}>ID</th>
                                 <th style={{ color: '#3a4856', fontWeight: '600' }}>Technician</th>
                                 <th style={{ color: '#3a4856', fontWeight: '600' }}>Client</th>
-                                <th style={{ color: '#3a4856', fontWeight: '600' }}>Scheduled Date</th>
+                                <th style={{ color: '#3a4856', fontWeight: '600' }}>Location</th>
+                                <th style={{ color: '#3a4856', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    Scheduled Date
+                                    {sortOrder === 'desc' ? (
+                                        <ArrowDownward sx={{ fontSize: 16, color: '#1299dd' }} title="Newest first" />
+                                    ) : (
+                                        <ArrowUpward sx={{ fontSize: 16, color: '#1299dd' }} title="Oldest first" />
+                                    )}
+                                </th>
                                 <th style={{ color: '#3a4856', fontWeight: '600' }}>Status</th>
                                 <th style={{ color: '#3a4856', fontWeight: '600' }}>Progress</th>
                             </tr>
@@ -38,6 +46,9 @@ const PlanningList = ({ interventions, loading, getStatusBadgeColor, formatDate 
                                         {intervention.user?.name || 'Unassigned'}
                                     </td>
                                     <td data-label="Client" style={{ color: '#3a4856' }}>{intervention.ticket?.user?.name || 'Unknown'}</td>
+                                    <td data-label="Location" style={{ color: '#3a4856', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={intervention.location || 'Not specified'}>
+                                        {intervention.location || 'Not specified'}
+                                    </td>
                                     <td data-label="Scheduled Date" style={{ color: '#717275', fontSize: '0.95rem' }}>{formatDate(intervention.scheduled_at)}</td>
                                     <td data-label="Status">
                                         <span className="badge text-white px-3 py-2" style={{ backgroundColor: getStatusBadgeColor(intervention.status), fontSize: '0.85rem', fontWeight: '600', textTransform: 'capitalize' }}>

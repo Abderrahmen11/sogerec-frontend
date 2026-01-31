@@ -77,7 +77,7 @@ const AppRouter = () => (
                 <Route
                     path="/interventions"
                     element={
-                        <PrivateRoute roles={['technician', 'admin', 'client', 'user']}>
+                        <PrivateRoute roles={['technician', 'admin']}>
                             <Interventions />
                         </PrivateRoute>
                     }
@@ -85,7 +85,7 @@ const AppRouter = () => (
                 <Route
                     path="/interventions/:id"
                     element={
-                        <PrivateRoute roles={['technician', 'admin', 'client', 'user']}>
+                        <PrivateRoute roles={['technician', 'admin']}>
                             <InterventionDetails />
                         </PrivateRoute>
                     }

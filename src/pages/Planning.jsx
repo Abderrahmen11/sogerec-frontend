@@ -1,15 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CalendarMonth, List, Event, Info } from '@mui/icons-material';
 import useInterventions from '../hooks/useInterventions';
 import PlanningList from '../components/interventions/PlanningList';
 import PlanningCalendar from '../components/interventions/PlanningCalendar';
 
 const Planning = () => {
-    const { interventions, loading } = useInterventions();
-    const [viewMode, setViewMode] = useState('list'); // list or calendar
+    const { interventions, loading, fetchPlanning } = useInterventions();
+    const [viewMode, setViewMode] = useState('list');
+    const [filterDateFrom, setFilterDateFrom] = useState('');
+    const [filterDateTo, setFilterDateTo] = useState('');
+    const [sortBy, setSortBy] = useState('scheduled_at');
+    const [sortOrder, setSortOrder] = useState('desc'); // 'asc' = oldest first, 'desc' = newest first
+
+    useEffect(() => {
+        fetchPlanning();
+
+        // Re-fetch when user returns to this page (focus event)
+        const handleFocus = () => {
+            fetchPlanning();
+        };
+
+        window.addEventListener('focus', handleFocus);
+        return () => window.removeEventListener('focus', handleFocus);
+    }, [fetchPlanning]);
 
     // Filter for all interventions (not just upcoming)
-    const allInterventions = interventions || [];
+    const allInterventions = (interventions || []).filter(intervention => {
+        // Date filtering
+        if (filterDateFrom || filterDateTo) {
+            const interventionDate = new Date(intervention.scheduled_at);
+            if (filterDateFrom) {
+                const fromDate = new Date(filterDateFrom);
+                if (interventionDate < fromDate) return false;
+            }
+            if (filterDateTo) {
+                const toDate = new Date(filterDateTo);
+                toDate.setHours(23, 59, 59, 999);
+                if (interventionDate > toDate) return false;
+            }
+        }
+        return true;
+    }).sort((a, b) => {
+        // Sorting by scheduled_at date
+        const dateA = new Date(a.scheduled_at);
+        const dateB = new Date(b.scheduled_at);
+
+        if (sortOrder === 'desc') {
+            return dateB - dateA; // Newest first
+        } else {
+            return dateA - dateB; // Oldest first
+        }
+    });
 
     // Calculate summary stats by status
     const pendingCount = allInterventions.filter(i => i.status === 'pending').length;
@@ -73,6 +114,59 @@ const Planning = () => {
                     </div>
                 </div>
 
+                {/* Date Filters */}
+                <div className="row mb-4">
+                    <div className="col-md-6 col-lg-3">
+                        <label className="form-label fw-bold">From Date</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            value={filterDateFrom}
+                            onChange={(e) => setFilterDateFrom(e.target.value)}
+                            style={{ borderColor: '#7fffd4' }}
+                        />
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                        <label className="form-label fw-bold">To Date</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            value={filterDateTo}
+                            onChange={(e) => setFilterDateTo(e.target.value)}
+                            style={{ borderColor: '#7fffd4' }}
+                        />
+                    </div>
+                    {(filterDateFrom || filterDateTo) && (
+                        <div className="col-md-6 col-lg-3 d-flex align-items-end">
+                            <button
+                                className="btn btn-outline-secondary w-100"
+                                onClick={() => {
+                                    setFilterDateFrom('');
+                                    setFilterDateTo('');
+                                }}
+                            >
+                                Clear Filters
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Sort Controls */}
+                <div className="row mb-4">
+                    <div className="col-md-6 col-lg-3">
+                        <label className="form-label fw-bold">Sort By</label>
+                        <select
+                            className="form-select"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                            style={{ borderColor: '#7fffd4' }}
+                        >
+                            <option value="desc">Newest First</option>
+                            <option value="asc">Oldest First</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div className="row g-4 mb-5">
                     <div className="col-lg-2 col-md-4 col-6">
                         <div className="custom-block bg-warning text-dark shadow-sm p-3 h-100 text-center border-0">
@@ -116,6 +210,7 @@ const Planning = () => {
                             loading={loading}
                             getStatusBadgeColor={getStatusBadgeColor}
                             formatDate={formatDate}
+                            sortOrder={sortOrder}
                         />
                     ) : (
                         <PlanningCalendar
