@@ -201,12 +201,12 @@ const GetStarted = () => {
                                 <div className="support-option mb-4">
                                     <h5>Documentation</h5>
                                     <p>Browse our comprehensive guides and documentation to find answers to common questions.</p>
-                                    <Link to="#" className="btn custom-btn mt-2">View Documentation</Link>
+                                    <Link to="/documentation" className="btn custom-btn mt-2">View Documentation</Link>
                                 </div>
                                 <div className="support-option mb-4">
                                     <h5>FAQs</h5>
                                     <p>Find quick answers to frequently asked questions about using Sogerec.</p>
-                                    <Link to="#" className="btn custom-btn mt-2">View FAQs</Link>
+                                    <Link to="/documentation#faqs" className="btn custom-btn mt-2">View FAQs</Link>
                                 </div>
                                 <div className="support-option">
                                     <h5>Contact Us</h5>

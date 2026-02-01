@@ -5,6 +5,7 @@ import api from '../services/api';
 
 const Reports = () => {
     const { isAdmin } = useRoleAccess();
+    const admin = isAdmin();
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -29,10 +30,10 @@ const Reports = () => {
             }
         };
 
-        if (isAdmin()) {
+        if (admin) {
             fetchReports();
         }
-    }, [isAdmin]);
+    }, [admin]);
 
     const getStatusBadgeColor = (status) => {
         switch (status) {

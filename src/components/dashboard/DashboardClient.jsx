@@ -34,7 +34,7 @@ ChartJS.register(
 const DashboardClient = () => {
     const { user } = useAuth();
     const { tickets, loading: ticketsLoading, fetchTickets } = useTickets();
-    const { interventions, loading: interventionsLoading, fetchInterventions } = useInterventions();
+    const { interventions = [] } = useInterventions();
     const [activeTab, setActiveTab] = useState('tickets');
     const [openAccordion, setOpenAccordion] = useState('collapseOne');
 
@@ -44,8 +44,9 @@ const DashboardClient = () => {
 
     useEffect(() => {
         fetchTickets();
-        fetchInterventions();
-    }, [fetchTickets, fetchInterventions]);
+        // Clients should NOT fetch interventions directly
+        // They only see interventions within ticket details
+    }, [fetchTickets]);
 
     // Initialize Bootstrap collapse for accordion animations
     useEffect(() => {
@@ -85,8 +86,9 @@ const DashboardClient = () => {
     // Calculate stats
     const myTickets = tickets || [];
     const openTicketsCount = myTickets.filter(t => t.status === 'open').length;
-    const interventionsCount = interventions ? interventions.length : 0;
-    const planningCount = interventions ? interventions.filter(i => new Date(i.start_date) > new Date()).length : 0;
+    // For clients: interventions count is empty (not fetched), only show via ticket details
+    const interventionsCount = 0;
+    const planningCount = 0;
     const supportCount = myTickets.length;
 
     // Chart Data
