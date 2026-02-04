@@ -73,19 +73,7 @@ const Register = () => {
                                         autoComplete="email"
                                     />
                                 </div>
-                                <div className="mb-3">
-                                    <label htmlFor="role" className="form-label">Role</label>
-                                    <select
-                                        id="role"
-                                        className="form-control"
-                                        name="role"
-                                        value={formData.role}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="client">Client</option>
-                                        <option value="technician">Technician</option>
-                                    </select>
-                                </div>
+                                {/* Role selection removed - automatically set to client */}
                                 <div className="mb-3">
                                     <label htmlFor="password" className="form-label">Password</label>
                                     <div className="input-group">
