@@ -9,6 +9,7 @@ const Login = () => {
     const { login, loading, error } = useAuth();
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [localError, setLocalError] = useState(null);
+    const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
@@ -23,7 +24,11 @@ const Login = () => {
             await login(formData.email, formData.password);
             navigate('/dashboard');
         } catch (err) {
-            setLocalError(err.message || 'Login failed');
+            if (err.errors) {
+                setErrors(err.errors);
+            } else {
+                setLocalError(err.message || 'Login failed');
+            }
         }
     };
 
@@ -48,6 +53,7 @@ const Login = () => {
                                         required
                                         autoComplete="email"
                                     />
+                                    {errors.email && <small className="text-danger d-block mt-1">{errors.email[0]}</small>}
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password" className="form-label">Password</label>
@@ -71,6 +77,7 @@ const Login = () => {
                                             {showPassword ? <VisibilityOff /> : <Visibility />}
                                         </button>
                                     </div>
+                                    {errors.password && <small className="text-danger d-block mt-1">{errors.password[0]}</small>}
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
                                     {loading ? 'Logging in...' : 'Login'}

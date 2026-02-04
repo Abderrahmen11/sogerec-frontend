@@ -34,7 +34,11 @@ const Register = () => {
             await register(formData);
             navigate('/dashboard');
         } catch (err) {
-            setErrors({ form: err.message || 'Registration failed' });
+            if (err.errors) {
+                setErrors(err.errors);
+            } else {
+                setErrors({ form: err.message || 'Registration failed' });
+            }
         }
     };
 
@@ -59,6 +63,7 @@ const Register = () => {
                                         required
                                         autoComplete="name"
                                     />
+                                    {errors.name && <small className="text-danger d-block mt-1">{errors.name[0]}</small>}
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label">Email</label>
@@ -72,6 +77,7 @@ const Register = () => {
                                         required
                                         autoComplete="email"
                                     />
+                                    {errors.email && <small className="text-danger d-block mt-1">{errors.email[0]}</small>}
                                 </div>
                                 {/* Role selection removed - automatically set to client */}
                                 <div className="mb-3">
@@ -96,6 +102,7 @@ const Register = () => {
                                             {showPassword ? <VisibilityOff /> : <Visibility />}
                                         </button>
                                     </div>
+                                    {errors.password && <small className="text-danger d-block mt-1">{errors.password[0]}</small>}
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password_confirmation" className="form-label">Confirm Password</label>

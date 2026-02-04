@@ -11,6 +11,7 @@ const CreateTicket = () => {
         priority: 'medium',
         category: 'general'
     });
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,10 +20,14 @@ const CreateTicket = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors({});
         try {
             await createTicket(formData);
             navigate('/tickets');
         } catch (err) {
+            if (err.errors) {
+                setErrors(err.errors);
+            }
             console.error('Failed to create ticket:', err);
         }
     };
@@ -58,9 +63,9 @@ const CreateTicket = () => {
                                                     placeholder="Subject"
                                                     value={formData.title}
                                                     onChange={handleChange}
-                                                    required
                                                 />
                                                 <label htmlFor="title">Subject</label>
+                                                {errors.title && <small className="text-danger d-block mt-1">{errors.title[0]}</small>}
                                             </div>
                                         </div>
 
@@ -114,6 +119,7 @@ const CreateTicket = () => {
                                                     required
                                                 ></textarea>
                                                 <label htmlFor="description">Description</label>
+                                                {errors.description && <small className="text-danger d-block mt-1">{errors.description[0]}</small>}
                                             </div>
                                         </div>
 
