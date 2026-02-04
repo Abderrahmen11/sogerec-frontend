@@ -121,15 +121,16 @@ const InterventionForm = ({ onSubmit, ticketId }) => {
 
             {!ticketId && (
                 <div className="mb-3">
-                    <label className="form-label fw-bold">Ticket ID</label>
-                    <input type="text" className="form-control" name="ticket_id" value={formData.ticket_id} onChange={handleChange} required placeholder="Enter Ticket ID" />
+                    <label htmlFor="ticket_id" className="form-label fw-bold">Ticket ID</label>
+                    <input type="text" id="ticket_id" className="form-control" name="ticket_id" value={formData.ticket_id} onChange={handleChange} required placeholder="Enter Ticket ID" />
                 </div>
             )}
 
             <div className="mb-3">
-                <label className="form-label fw-bold">Intervention Title</label>
+                <label htmlFor="title" className="form-label fw-bold">Intervention Title</label>
                 <input
                     type="text"
+                    id="title"
                     className="form-control"
                     name="title"
                     value={formData.title}
@@ -141,9 +142,10 @@ const InterventionForm = ({ onSubmit, ticketId }) => {
             </div>
 
             <div className="mb-3">
-                <label className="form-label fw-bold">Select Technician</label>
+                <label htmlFor="user_id" className="form-label fw-bold">Select Technician</label>
                 <select
                     className="form-select"
+                    id="user_id"
                     name="user_id"
                     value={formData.user_id}
                     onChange={handleChange}
@@ -164,9 +166,10 @@ const InterventionForm = ({ onSubmit, ticketId }) => {
             </div>
 
             <div className="mb-3">
-                <label className="form-label fw-bold">Intervention Note / Description</label>
+                <label htmlFor="description" className="form-label fw-bold">Intervention Note / Description</label>
                 <textarea
                     className="form-control"
+                    id="description"
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
@@ -178,10 +181,11 @@ const InterventionForm = ({ onSubmit, ticketId }) => {
             </div>
 
             <div className="mb-3">
-                <label className="form-label fw-bold">Location</label>
+                <label htmlFor="location" className="form-label fw-bold">Location</label>
                 <div className="input-group">
                     <input
                         type="text"
+                        id="location"
                         className="form-control"
                         name="location"
                         value={formData.location}
@@ -237,9 +241,10 @@ const InterventionForm = ({ onSubmit, ticketId }) => {
             )}
 
             <div className="mb-3">
-                <label className="form-label fw-bold">Scheduled Date & Time</label>
+                <label htmlFor="scheduled_at" className="form-label fw-bold">Scheduled Date & Time</label>
                 <input
                     type="datetime-local"
+                    id="scheduled_at"
                     className="form-control"
                     name="scheduled_at"
                     value={formData.scheduled_at}

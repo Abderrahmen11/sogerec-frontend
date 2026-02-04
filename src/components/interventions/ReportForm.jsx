@@ -26,16 +26,16 @@ const ReportForm = ({ interventionId, onSubmit }) => {
     return (
         <form onSubmit={handleSubmit} >
             <div className="mb-3">
-                <label className="form-label">Findings</label>
-                <textarea className="form-control" name="findings" value={formData.findings} onChange={handleChange} required></textarea>
+                <label htmlFor="findings" className="form-label">Findings</label>
+                <textarea id="findings" className="form-control" name="findings" value={formData.findings} onChange={handleChange} required></textarea>
             </div>
             <div className="mb-3">
-                <label className="form-label">Actions Taken</label>
-                <textarea className="form-control" name="actions_taken" value={formData.actions_taken} onChange={handleChange} required></textarea>
+                <label htmlFor="actions_taken" className="form-label">Actions Taken</label>
+                <textarea id="actions_taken" className="form-control" name="actions_taken" value={formData.actions_taken} onChange={handleChange} required></textarea>
             </div>
             <div className="mb-3">
-                <label className="form-label">Recommendations</label>
-                <textarea className="form-control" name="recommendations" value={formData.recommendations} onChange={handleChange}></textarea>
+                <label htmlFor="recommendations" className="form-label">Recommendations</label>
+                <textarea id="recommendations" className="form-control" name="recommendations" value={formData.recommendations} onChange={handleChange}></textarea>
             </div>
             <button type="submit" className="btn btn-primary">Submit Report</button>
         </form>

@@ -3,9 +3,10 @@ import { CalendarMonth, List, Event, Info } from '@mui/icons-material';
 import useInterventions from '../hooks/useInterventions';
 import PlanningList from '../components/interventions/PlanningList';
 import PlanningCalendar from '../components/interventions/PlanningCalendar';
+import AnimatedNumber from '../components/common/AnimatedNumber';
 
 const Planning = () => {
-    const { interventions, loading, fetchPlanning } = useInterventions();
+    const { interventions, loading, error, fetchPlanning } = useInterventions();
     const [viewMode, setViewMode] = useState('list');
     const [filterDateFrom, setFilterDateFrom] = useState('');
     const [filterDateTo, setFilterDateTo] = useState('');
@@ -117,9 +118,11 @@ const Planning = () => {
                 {/* Date Filters */}
                 <div className="row mb-4">
                     <div className="col-md-6 col-lg-3">
-                        <label className="form-label fw-bold">From Date</label>
+                        <label htmlFor="filterDateFrom" className="form-label fw-bold">From Date</label>
                         <input
                             type="date"
+                            id="filterDateFrom"
+                            name="filterDateFrom"
                             className="form-control"
                             value={filterDateFrom}
                             onChange={(e) => setFilterDateFrom(e.target.value)}
@@ -127,9 +130,11 @@ const Planning = () => {
                         />
                     </div>
                     <div className="col-md-6 col-lg-3">
-                        <label className="form-label fw-bold">To Date</label>
+                        <label htmlFor="filterDateTo" className="form-label fw-bold">To Date</label>
                         <input
                             type="date"
+                            id="filterDateTo"
+                            name="filterDateTo"
                             className="form-control"
                             value={filterDateTo}
                             onChange={(e) => setFilterDateTo(e.target.value)}
@@ -154,8 +159,10 @@ const Planning = () => {
                 {/* Sort Controls */}
                 <div className="row mb-4">
                     <div className="col-md-6 col-lg-3">
-                        <label className="form-label fw-bold">Sort By</label>
+                        <label htmlFor="sortOrder" className="form-label fw-bold">Sort By</label>
                         <select
+                            id="sortOrder"
+                            name="sortOrder"
                             className="form-select"
                             value={sortOrder}
                             onChange={(e) => setSortOrder(e.target.value)}
@@ -167,37 +174,61 @@ const Planning = () => {
                     </div>
                 </div>
 
+                {/* Error Alert */}
+                {error && (
+                    <div className="alert alert-danger mb-4 shadow-sm border-0">
+                        <Info sx={{ mr: 1, verticalAlign: 'middle', fontSize: 20 }} />
+                        {error}
+                        <button
+                            className="btn btn-sm btn-outline-danger ms-3"
+                            onClick={() => fetchPlanning()}
+                        >
+                            Retry
+                        </button>
+                    </div>
+                )}
+
                 <div className="row g-4 mb-5">
                     <div className="col-lg-2 col-md-4 col-6">
                         <div className="custom-block bg-warning text-dark shadow-sm p-3 h-100 text-center border-0">
                             <h6 className="mb-2">Pending</h6>
-                            <h3 className="fw-bold mb-0">{pendingCount}</h3>
+                            <h3 className="fw-bold mb-0">
+                                <AnimatedNumber value={pendingCount} />
+                            </h3>
                         </div>
                     </div>
                     <div className="col-lg-2 col-md-4 col-6">
                         <div className="custom-block bg-primary text-white shadow-sm p-3 h-100 text-center border-0">
                             <h6 className="mb-2">Scheduled</h6>
-                            <h3 className="fw-bold mb-0">{scheduledCount}</h3>
+                            <h3 className="fw-bold mb-0">
+                                <AnimatedNumber value={scheduledCount} />
+                            </h3>
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-6 col-12">
                         <div className="custom-block bg-info text-white shadow-sm p-4 h-100 text-center border-0">
                             <h5 className="mb-2 text-uppercase small ls-wide">In Progress</h5>
-                            <p className="display-6 fw-bold mb-2">{inProgressCount}</p>
+                            <p className="display-6 fw-bold mb-2">
+                                <AnimatedNumber value={inProgressCount} />
+                            </p>
                             <span className="badge bg-light text-info">Active</span>
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-6 col-12">
                         <div className="custom-block bg-success text-white shadow-sm p-4 h-100 text-center border-0">
                             <h5 className="mb-2 text-uppercase small ls-wide">Completed</h5>
-                            <p className="display-6 fw-bold mb-2">{completedCount}</p>
+                            <p className="display-6 fw-bold mb-2">
+                                <AnimatedNumber value={completedCount} />
+                            </p>
                             <span className="badge bg-light text-success">Done</span>
                         </div>
                     </div>
                     <div className="col-lg-2 col-md-4 col-12">
                         <div className="custom-block bg-danger text-white shadow-sm p-3 h-100 text-center border-0">
                             <h6 className="mb-2">Cancelled</h6>
-                            <h3 className="fw-bold mb-0">{cancelledCount}</h3>
+                            <h3 className="fw-bold mb-0">
+                                <AnimatedNumber value={cancelledCount} />
+                            </h3>
                         </div>
                     </div>
                 </div>
